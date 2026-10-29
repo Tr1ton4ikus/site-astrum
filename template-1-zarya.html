@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="ru" data-sky="day">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ASTRUM — ванильный Minecraft Java-сервер</title>
+<meta name="description" content="ASTRUM — ванильный полу-РП Minecraft-сервер без приватов. Города, свобода и живой мир. Java Edition, astrums.pro.">
+<meta property="og:title" content="ASTRUM — ванильный Minecraft Java-сервер">
+<meta property="og:description" content="Мир на рассвете. astrums.pro">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Onest:wght@400;500;600&display=swap" rel="stylesheet">
+<script>
+/* небо выбираем до отрисовки: сохранённое или по времени суток */
+(function(){var s=null;try{s=localStorage.getItem('astrum-sky')}catch(e){}
+if(!s){var h=new Date().getHours();s=(h>=7&&h<19)?'day':'night'}
+document.documentElement.dataset.sky=s})();
+</script>
+<style>
+:root{
+  --bg:#f8f5ef; --ink:#252321; --muted:#7a726b; --line:#2523211a; --glass:#ffffffb3; --card:#ffffff;
+  --coral:#f28b78; --gold:#e8b66a; --rose:#e8a7b7; --violet:#8a6bff;
+  --grad:linear-gradient(120deg,#f28b78,#e8b66a);
+  --shadow:0 24px 80px rgba(73,49,36,.12);
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+html[data-sky=night]{--bg:#14101f; --ink:#f3eefb; --muted:#a79dba; --line:#ffffff1c; --glass:#ffffff12; --card:#1e1733; --shadow:0 24px 80px rgba(0,0,0,.45)}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth;overflow-x:clip}
+body{font-family:Onest,system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6;font-size:17px;transition:background .8s,color .8s}
+h1,h2,h3,.num,.brand{font-family:Unbounded,sans-serif;letter-spacing:-.025em;line-height:1}
+a{color:inherit;text-decoration:none}
+.wrap{width:min(1180px,100% - 48px);margin-inline:auto}
+body::after{content:"";position:fixed;inset:0;z-index:90;pointer-events:none;opacity:.035;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+html[data-sky=night] body::after{mix-blend-mode:screen;opacity:.05}
+.aura{position:absolute;inset:0 0 auto 0;height:900px;z-index:-1;pointer-events:none;overflow:hidden}
+.aura i{position:absolute;border-radius:50%;filter:blur(100px);opacity:.3;transition:opacity .8s}
+.aura i:nth-child(1){width:560px;height:560px;right:-140px;top:-120px;background:var(--coral)}
+.aura i:nth-child(2){width:440px;height:440px;left:-160px;top:300px;background:var(--rose);opacity:.22}
+html[data-sky=night] .aura i{opacity:.2}html[data-sky=night] .aura i:nth-child(1){background:var(--violet)}
+
+/* NAV */
+nav{position:fixed;inset:0 0 auto 0;z-index:60;transition:background .4s,box-shadow .4s}
+nav.solid{background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(18px) saturate(1.4);box-shadow:0 1px 0 var(--line)}
+nav .wrap{display:flex;align-items:center;gap:28px;height:80px}
+.brand{font-weight:900;font-size:18px;letter-spacing:.2em;display:flex;align-items:center;gap:12px}
+.star{width:24px;height:24px;background:var(--grad);clip-path:polygon(50% 0,62% 38%,100% 50%,62% 62%,50% 100%,38% 62%,0 50%,38% 38%)}
+nav ul{display:flex;gap:6px;list-style:none;padding:0;margin-left:auto}
+nav ul a{display:block;padding:9px 16px;border-radius:999px;font-weight:500;font-size:15px;color:var(--muted);transition:color .2s,background .2s}
+nav ul a:hover{color:var(--ink);background:var(--line)}
+.sw{width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:var(--glass);cursor:pointer;display:grid;place-items:center;color:var(--ink);transition:transform .3s var(--ease),border-color .2s}
+.sw:hover{transform:rotate(25deg);border-color:var(--coral)}
+.sw svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.sw .moon{display:none}html[data-sky=night] .sw .moon{display:block}html[data-sky=night] .sw .sun{display:none}
+.btn{display:inline-flex;align-items:center;gap:10px;height:54px;padding:0 30px;border-radius:999px;font-weight:600;font-size:16px;border:0;cursor:pointer;font-family:inherit;
+  transition:transform .18s var(--ease),box-shadow .22s,background .22s,color .22s}
+.btn:hover{transform:translateY(-2px)}.btn:active{transform:scale(.98)}
+.btn-main{background:var(--grad);color:#2a1608;box-shadow:0 20px 40px -14px rgba(242,139,120,.6),inset 0 1px 0 rgba(255,255,255,.55)}
+.btn-main:hover{box-shadow:0 26px 48px -14px rgba(242,139,120,.75),inset 0 1px 0 rgba(255,255,255,.55)}
+.btn-line{background:transparent;box-shadow:inset 0 0 0 1.5px var(--ink);color:var(--ink)}
+.btn-line:hover{background:var(--ink);color:var(--bg)}
+.btn-sm{height:44px;padding:0 22px;font-size:15px}
+.burger{display:none;width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:var(--glass);cursor:pointer;position:relative}
+.burger::before,.burger::after{content:"";position:absolute;left:12px;right:12px;height:2px;background:var(--ink);top:15px;box-shadow:0 8px 0 var(--ink)}
+.burger::after{box-shadow:none;top:23px}
+
+/* HERO */
+.hero{position:relative;padding:170px 0 110px}
+.hero .wrap{display:grid;grid-template-columns:6fr 5fr;gap:70px;align-items:center}
+.kick{font-size:12.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);display:inline-flex;align-items:center;gap:12px}
+.kick::before{content:"";width:34px;height:1px;background:var(--coral)}
+h1{font-size:clamp(46px,7.4vw,108px);font-weight:900;margin:28px 0 26px;line-height:.96}
+h1 .ln{display:block;overflow:hidden;padding-bottom:.1em}
+h1 .ln>span{display:block;transform:translateY(110%);animation:up .9s var(--ease) forwards}
+h1 .ln:nth-child(2)>span{animation-delay:.1s}
+h1 em{font-style:normal;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+@keyframes up{to{transform:none}}
+.sub{font-size:clamp(18px,1.7vw,22px);color:var(--muted);opacity:0;animation:fade .8s .4s var(--ease) forwards}
+.cta{display:flex;gap:22px;align-items:center;flex-wrap:wrap;margin-top:40px;opacity:0;animation:fade .8s .5s var(--ease) forwards}
+@keyframes fade{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.more{font-weight:600;border-bottom:1.5px solid var(--coral);padding-bottom:3px;transition:color .2s}.more:hover{color:var(--coral)}
+.ipbar{display:inline-flex;align-items:center;gap:16px;margin-top:46px;padding:8px 8px 8px 22px;border-radius:999px;background:var(--glass);border:1px solid var(--line);backdrop-filter:blur(14px);cursor:pointer;color:inherit;font-family:inherit;font-size:15px;opacity:0;animation:fade .8s .6s var(--ease) forwards;transition:border-color .2s}
+.ipbar:hover{border-color:var(--coral)}
+.ipbar b{font-family:Unbounded;font-size:15px;font-weight:700}
+.ipbar span{background:var(--ink);color:var(--bg);padding:9px 16px;border-radius:999px;font-size:13px;font-weight:600}
+.scene{position:relative;aspect-ratio:4/5;border-radius:40px;overflow:hidden;box-shadow:var(--shadow);opacity:0;animation:fade 1s .25s var(--ease) forwards}
+.scene img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .9s,transform 1.6s var(--ease)}
+.scene img.night{opacity:0}html[data-sky=night] .scene img.night{opacity:1}html[data-sky=night] .scene img.day{opacity:0}
+.scene:hover img{transform:scale(1.04)}
+.scene::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,rgba(37,18,10,.4));pointer-events:none}
+.live{position:absolute;left:22px;bottom:22px;z-index:2;display:flex;align-items:center;gap:10px;padding:10px 16px;border-radius:999px;background:var(--glass);backdrop-filter:blur(16px);border:1px solid #ffffff55;font-size:13.5px;font-weight:600}
+html[data-sky=night] .live{border-color:#ffffff22}
+.live i{width:9px;height:9px;border-radius:50%;background:#35c46a;box-shadow:0 0 0 4px #35c46a33;animation:pu 2.2s infinite}
+@keyframes pu{50%{box-shadow:0 0 0 8px #35c46a00}}
+html:not([data-live=on]) .live-only{display:none}
+
+section{padding:130px 0}
+h2{font-size:clamp(30px,4vw,56px);font-weight:900;line-height:1.02}
+
+/* PRINCIPLES */
+.pr{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line)}
+.p{padding:36px 30px 0 0}.p+.p{padding-left:30px;border-left:1px solid var(--line)}
+.p h3{font-size:22px;font-weight:700;margin-bottom:12px}.p p{color:var(--muted);max-width:220px}
+
+/* LINKS */
+.tri{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.card{position:relative;border-radius:32px;overflow:hidden;min-height:440px;color:#fff;display:flex;flex-direction:column;justify-content:flex-end;padding:34px;isolation:isolate;transition:transform .5s var(--ease),box-shadow .5s}
+.card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;transition:transform 1.2s var(--ease)}
+.card::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,transparent 35%,rgba(24,12,18,.78))}
+.card:hover{transform:translateY(-6px);box-shadow:var(--shadow)}.card:hover img{transform:scale(1.07)}
+.card h3{font-size:34px;font-weight:700;margin-bottom:10px}
+.card p{opacity:.9;margin-bottom:22px}
+.card .go{display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:15px}
+.card .go::after{content:"→";transition:transform .3s var(--ease)}.card:hover .go::after{transform:translateX(6px)}
+
+/* STEPS */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);margin-top:56px;border-top:1px solid var(--line)}
+.step{padding:38px 36px 0 0}.step+.step{padding-left:36px;border-left:1px solid var(--line)}
+.step .num{font-size:15px;font-weight:700;color:var(--coral);display:block;margin-bottom:22px}
+.step h3{font-size:24px;margin-bottom:12px}.step p{color:var(--muted)}
+
+/* FAQ */
+.faq{display:grid;grid-template-columns:5fr 7fr;gap:80px;align-items:start}
+.faq .stick{position:sticky;top:130px}
+details{border-bottom:1px solid var(--line);padding:24px 0}details:first-child{border-top:1px solid var(--line)}
+summary{cursor:pointer;font-weight:600;font-size:19px;list-style:none;display:flex;justify-content:space-between;gap:24px;transition:color .2s}
+summary:hover{color:var(--coral)}
+summary::after{content:"+";font-size:28px;line-height:.8;color:var(--coral);transition:transform .32s var(--ease)}
+details[open] summary::after{transform:rotate(45deg)}
+details p{color:var(--muted);margin-top:12px}
+
+/* DISCORD */
+.disc{margin-bottom:130px;border-radius:44px;padding:90px 70px;color:#fff;position:relative;overflow:hidden;text-align:center;background:linear-gradient(130deg,#3a2a78,#6a4cdb 60%,#c46ab0)}
+.disc::after{content:"";position:absolute;left:50%;top:-220px;width:520px;height:520px;margin-left:-260px;border-radius:50%;background:radial-gradient(circle,rgba(232,182,106,.5),transparent 68%)}
+.disc>*{position:relative;z-index:1}
+.disc h2{margin-bottom:16px;color:#fff}.disc p{opacity:.9;margin-bottom:34px}
+.disc .btn{background:#fff;color:#2a1a5a;box-shadow:none}
+
+footer{border-top:1px solid var(--line);padding:44px 0;color:var(--muted);font-size:15px}
+footer .wrap{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;align-items:center}
+footer ul{display:flex;gap:26px;list-style:none;padding:0}footer a:hover{color:var(--ink)}
+
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .64s var(--ease),transform .64s var(--ease)}.reveal.in{opacity:1;transform:none}
+.toast{position:fixed;bottom:30px;left:50%;transform:translate(-50%,100px);background:var(--ink);color:var(--bg);padding:14px 26px;border-radius:999px;font-weight:600;transition:transform .4s var(--ease);z-index:130}
+.toast.show{transform:translate(-50%,0)}
+
+@media(max-width:1020px){
+  nav ul{position:absolute;top:80px;left:0;right:0;flex-direction:column;background:var(--bg);padding:14px 24px;box-shadow:0 20px 40px rgba(0,0,0,.12);display:none;margin:0}
+  .menu-open nav ul{display:flex}.burger{display:block}nav .sw{margin-left:auto}
+  .hero .wrap,.faq{grid-template-columns:1fr;gap:50px}.faq .stick{position:static}
+  .scene{max-width:520px}
+  .pr{grid-template-columns:1fr 1fr}.p:nth-child(3){border-left:0;padding-left:0}.p:nth-child(n+3){margin-top:36px}.p:nth-child(odd){padding-left:0;border-left:0}
+  .tri{grid-template-columns:1fr}.card{min-height:320px}
+  .steps{grid-template-columns:1fr}.step,.step+.step{padding:34px 0;border-left:0;border-bottom:1px solid var(--line)}
+  section{padding:90px 0}.disc{padding:60px 28px}
+}
+@media(max-width:620px){.pr{grid-template-columns:1fr}.p,.p+.p{border:0;padding:24px 0;border-bottom:1px solid var(--line)}.p:nth-child(n+3){margin-top:0}.nav-btn{display:none}.ipbar{width:100%;justify-content:space-between}.hero{padding-top:130px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal,h1 .ln>span,.sub,.cta,.ipbar,.scene{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<div class="aura"><i></i><i></i></div>
+
+<nav id="nav"><div class="wrap">
+  <a href="#" class="brand"><i class="star"></i>ASTRUM</a>
+  <ul>
+    <li><a href="/map">Карта</a></li>
+    <li><a href="/wiki">Вики</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="https://shop.astrums.pro">Магазин</a></li>
+  </ul>
+  <button class="sw" id="sw" aria-label="Переключить день и ночь" title="День / ночь">
+    <svg class="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    <svg class="moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5z"/></svg>
+  </button>
+  <a class="btn btn-main btn-sm nav-btn" href="/wiki/#/how-play">Начать игру</a>
+  <button class="burger" aria-label="Меню"></button>
+</div></nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div>
+      <span class="kick">Minecraft Java · Полу-РП</span>
+      <h1><span class="ln"><span>Мир</span></span><span class="ln"><span>на <em>рассвете</em></span></span></h1>
+      <p class="sub">Твой мир. Твоя история. Твой выбор.</p>
+      <div class="cta">
+        <a class="btn btn-main" href="/wiki/#/how-play" data-magnet>Начать игру →</a>
+        <a class="more" href="#about">Узнать больше</a>
+      </div>
+      <button class="ipbar" data-ip><b>astrums.pro</b><span>Копировать IP</span></button>
+    </div>
+    <div class="scene">
+      <img class="day" src="assets/sunset.webp" alt="Закат над миром ASTRUM"><img class="night" src="assets/cave.png" alt="Ночной мир ASTRUM">
+      <div class="live"><i></i>Мир открыт<span class="live-only"> · <span data-online>—</span> онлайн</span></div>
+    </div>
+  </div>
+</header>
+
+<section id="about" style="padding-top:40px">
+  <div class="wrap">
+    <div class="pr">
+      <div class="p reveal"><h3>Свобода</h3><p>Играй по-своему, оставляя место другим.</p></div>
+      <div class="p reveal"><h3>Сообщество</h3><p>Мир создают те, кто в нём живёт.</p></div>
+      <div class="p reveal"><h3>Порядок</h3><p>Без приватов. С доверием и ответственностью.</p></div>
+      <div class="p reveal"><h3>Истории</h3><p>РП — твой выбор, не обязанность.</p></div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:20px">
+  <div class="wrap tri">
+    <a class="card reveal" href="/map"><img src="assets/cherry.jpg" alt="" loading="lazy"><h3>Карта</h3><p>Увидь мир с высоты.</p><span class="go">Открыть карту</span></a>
+    <a class="card reveal" href="/wiki"><img src="assets/cave.png" alt="" loading="lazy"><h3>Вики</h3><p>Всё важное — в одном месте.</p><span class="go">Читать вики</span></a>
+    <a class="card reveal" href="https://shop.astrums.pro"><img src="assets/rainbow.webp" alt="" loading="lazy"><h3>Магазин</h3><p>Поддержи развитие ASTRUM.</p><span class="go">В магазин</span></a>
+  </div>
+</section>
+
+<section style="padding-top:60px">
+  <div class="wrap">
+    <h2 class="reveal">Как зайти</h2>
+    <div class="steps">
+      <div class="step reveal"><span class="num">01</span><h3>Выбери путь</h3><p>Подай заявку или получи проходку.</p></div>
+      <div class="step reveal"><span class="num">02</span><h3>Войди в Discord</h3><p>Discord обязателен для каждого игрока.</p></div>
+      <div class="step reveal"><span class="num">03</span><h3>Подключись</h3><p>Java Edition. Адрес: astrums.pro.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="faq" style="padding-top:60px">
+  <div class="wrap faq">
+    <div class="stick reveal"><h2>Вопросы</h2></div>
+    <div class="reveal">
+      <details open><summary>Нужна ли лицензия Minecraft?</summary><p>Нет, лицензия не требуется.</p></details>
+      <details><summary>Как попасть на сервер?</summary><p>Подай заявку или получи проходку. Вступление в Discord обязательно.</p></details>
+      <details><summary>Какие версии поддерживаются?</summary><p>Java Edition, версии 1.21–26.2.</p></details>
+      <details><summary>Есть ли приваты и телепорты?</summary><p>Нет приватов и команды /spawn.</p></details>
+      <details><summary>РП обязательно?</summary><p>Нет. Города, парламент и ФБР — по желанию.</p></details>
+    </div>
+  </div>
+</section>
+
+<div class="wrap"><div class="disc reveal">
+  <h2>Твой следующий горизонт</h2>
+  <p>Общайся, узнавай новости и становись частью ASTRUM.</p>
+  <a class="btn" href="https://discord.gg/7jnWGDB2fP" data-magnet>Войти в Discord</a>
+</div></div>
+
+<footer><div class="wrap">
+  <span>ASTRUM — мир, который мы создаём вместе.</span>
+  <ul><li><a href="/map">Карта</a></li><li><a href="/wiki">Вики</a></li><li><a href="https://shop.astrums.pro">Магазин</a></li><li><a href="https://discord.gg/7jnWGDB2fP">Discord</a></li></ul>
+</div></footer>
+
+<div class="toast" id="toast">IP скопирован</div>
+<script src="assets/shared.js"></script>
+<script>
+/* ступенчатое появление: 70 мс между соседними элементами */
+document.querySelectorAll('.reveal').forEach(el=>{const sib=[...el.parentElement.children].filter(c=>c.classList.contains('reveal'));el.style.transitionDelay=(Math.min(sib.indexOf(el),4)*70)+'ms'});
+
+/* шапка и переключатель день/ночь */
+const nav=document.getElementById('nav'),root=document.documentElement;
+addEventListener('scroll',()=>nav.classList.toggle('solid',scrollY>30),{passive:true});
+document.getElementById('sw').onclick=()=>{const s=root.dataset.sky==='night'?'day':'night';root.dataset.sky=s;try{localStorage.setItem('astrum-sky',s)}catch(e){}};
+
+/* магнитные кнопки: только для мыши */
+if(matchMedia('(pointer:fine)').matches&&!matchMedia('(prefers-reduced-motion: reduce)').matches){
+  document.querySelectorAll('[data-magnet]').forEach(b=>{
+    b.addEventListener('mousemove',e=>{const r=b.getBoundingClientRect();b.style.transform=`translate(${(e.clientX-r.left-r.width/2)/r.width*16}px,${(e.clientY-r.top-r.height/2)/r.height*12-2}px)`});
+    b.addEventListener('mouseleave',()=>b.style.transform='');
+  });
+}
+</script>
+</body>
+</html>

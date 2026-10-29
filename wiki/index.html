@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="ru" data-sky="day">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Вики — ASTRUM</title>
+<meta name="description" content="Вики ASTRUM: правила, команды, механики, крафты и всё для новичка.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Onest:wght@400;500;600&display=swap" rel="stylesheet">
+<script>
+(function(){var s=null;try{s=localStorage.getItem('astrum-sky')}catch(e){}
+if(!s){var h=new Date().getHours();s=(h>=7&&h<19)?'day':'night'}
+document.documentElement.dataset.sky=s})();
+</script>
+<style>
+:root{
+  --bg:#f8f5ef; --panel:#ffffff; --ink:#252321; --muted:#7a726b; --line:#2523211a; --soft:#2523210a; --glass:#ffffffb3;
+  --coral:#f28b78; --gold:#e8b66a; --grad:linear-gradient(120deg,#f28b78,#e8b66a);
+  --code:#f1ebe0; --shadow:0 24px 80px rgba(73,49,36,.12); --ease:cubic-bezier(.16,1,.3,1);
+}
+html[data-sky=night]{--bg:#14101f;--panel:#1b1530;--ink:#f3eefb;--muted:#a79dba;--line:#ffffff1c;--soft:#ffffff0d;--glass:#ffffff12;--code:#241c3b;--shadow:0 24px 80px rgba(0,0,0,.45)}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth;overflow-x:clip;scroll-padding-top:100px}
+body{font-family:Onest,system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.7;font-size:17px;transition:background .6s,color .6s}
+h1,h2,h3,h4,.brand{font-family:Unbounded,sans-serif;letter-spacing:-.025em;line-height:1.1}
+a{color:inherit}
+button{font-family:inherit}
+.aura{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+.aura i{position:absolute;border-radius:50%;filter:blur(110px);opacity:.22}
+.aura i:nth-child(1){width:520px;height:520px;right:-140px;top:-140px;background:var(--coral)}
+.aura i:nth-child(2){width:420px;height:420px;left:-160px;bottom:-120px;background:#e8a7b7;opacity:.16}
+html[data-sky=night] .aura i:nth-child(1){background:#8a6bff;opacity:.2}
+
+/* верхняя панель */
+.top{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--bg) 84%,transparent);backdrop-filter:blur(18px) saturate(1.4);border-bottom:1px solid var(--line)}
+.top .in{display:flex;align-items:center;gap:22px;height:72px;padding:0 28px;max-width:1500px;margin:auto}
+.brand{display:flex;align-items:center;gap:12px;font-weight:900;font-size:17px;letter-spacing:.2em;text-decoration:none}
+.star{width:22px;height:22px;background:var(--grad);clip-path:polygon(50% 0,62% 38%,100% 50%,62% 62%,50% 100%,38% 62%,0 50%,38% 38%)}
+.crumb{color:var(--muted);font-size:14px;font-weight:500;padding-left:18px;border-left:1px solid var(--line)}
+.links{display:flex;gap:4px;margin-left:auto}
+.links a{padding:8px 14px;border-radius:999px;font-size:14.5px;font-weight:500;color:var(--muted);text-decoration:none;transition:.2s}
+.links a:hover{color:var(--ink);background:var(--soft)}
+.ib{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:var(--glass);cursor:pointer;display:grid;place-items:center;color:var(--ink);transition:.3s var(--ease)}
+.ib:hover{border-color:var(--coral)}
+.ib svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+#sw:hover{transform:rotate(25deg)}.moon{display:none}html[data-sky=night] .moon{display:block}html[data-sky=night] .sun{display:none}
+.menu{display:none}
+
+/* каркас */
+.shell{display:grid;grid-template-columns:280px minmax(0,1fr) 230px;gap:56px;max-width:1500px;margin:auto;padding:0 28px}
+aside.nav{position:sticky;top:72px;align-self:start;height:calc(100vh - 72px);overflow:auto;padding:32px 6px 40px 0}
+.search{position:relative;margin-bottom:30px}
+.search input{width:100%;height:46px;border-radius:14px;border:1px solid var(--line);background:var(--panel);padding:0 44px 0 42px;font:inherit;font-size:15px;color:var(--ink);outline:0;transition:border-color .2s,box-shadow .2s}
+.search input:focus{border-color:var(--coral);box-shadow:0 0 0 4px #f28b7826}
+.search svg{position:absolute;left:14px;top:13px;width:19px;height:19px;stroke:var(--muted);fill:none;stroke-width:1.8;stroke-linecap:round}
+.search kbd{position:absolute;right:12px;top:11px;font:600 12px Onest;color:var(--muted);border:1px solid var(--line);border-radius:7px;padding:2px 8px}
+.results{position:absolute;left:0;right:0;top:54px;background:var(--panel);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);overflow:hidden;display:none;z-index:5}
+.results.on{display:block}
+.results a{display:block;padding:12px 16px;text-decoration:none;border-bottom:1px solid var(--line)}
+.results a:last-child{border:0}.results a:hover,.results a.sel{background:var(--soft)}
+.results b{display:block;font-size:15px}.results small{color:var(--muted);font-size:13px;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.results mark{background:#f28b7840;color:inherit;border-radius:3px}
+.results .none{padding:16px;color:var(--muted);font-size:14.5px}
+.grp{font-size:11.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin:26px 0 10px 14px}
+.grp:first-of-type{margin-top:0}
+.item{display:block;padding:10px 14px;border-radius:12px;text-decoration:none;font-size:15.5px;font-weight:500;color:var(--muted);transition:color .2s,background .2s,padding .3s var(--ease);position:relative}
+.item:hover{color:var(--ink);background:var(--soft)}
+.item.on{color:var(--ink);background:var(--panel);box-shadow:0 1px 0 var(--line),0 8px 24px -12px rgba(73,49,36,.2)}
+.item.on::before{content:"";position:absolute;left:-1px;top:12px;bottom:12px;width:3px;border-radius:3px;background:var(--grad)}
+.editlink{display:inline-flex;gap:8px;margin:34px 0 0 14px;font-size:13.5px;color:var(--muted);text-decoration:none;border-bottom:1px dashed var(--line)}
+.editlink:hover{color:var(--coral)}
+
+main{padding:56px 0 100px;min-width:0}
+.cover{border-radius:28px;overflow:hidden;aspect-ratio:21/8;margin-bottom:44px;box-shadow:var(--shadow);position:relative;background:var(--soft)}
+.cover img{width:100%;height:100%;object-fit:cover}
+.cover::after{content:"";position:absolute;inset:0;background:linear-gradient(135deg,transparent 50%,rgba(242,139,120,.18))}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--coral)}
+main h1{font-size:clamp(34px,4.6vw,58px);font-weight:900;margin:14px 0 36px;line-height:1.02}
+article{animation:fade .5s var(--ease)}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.prose{max-width:760px}
+.prose>*+*{margin-top:1.1em}
+.prose h2{font-size:clamp(24px,2.6vw,32px);font-weight:700;margin-top:2.2em;padding-top:1.2em;border-top:1px solid var(--line)}
+.prose h2:first-child{margin-top:0;border:0;padding:0}
+.prose h3{font-size:21px;font-weight:700;margin-top:1.8em}
+.prose h4{font-size:17px;font-weight:700;margin-top:1.6em}
+.prose h2+*,.prose h3+*{margin-top:.8em}
+.prose :is(h2,h3):hover .anc{opacity:1}
+.anc{opacity:0;margin-left:10px;color:var(--coral);text-decoration:none;font-weight:400;transition:opacity .2s}
+.prose p,.prose li{color:color-mix(in srgb,var(--ink) 86%,var(--bg))}
+.prose ul,.prose ol{padding-left:1.3em}.prose li{padding-left:.3em}.prose li+li{margin-top:.5em}
+.prose li::marker{color:var(--coral)}
+.prose strong{color:var(--ink);font-weight:600}
+.prose a{color:var(--ink);text-decoration:none;border-bottom:1.5px solid var(--coral);transition:color .2s}.prose a:hover{color:var(--coral)}
+.prose code{font:500 .88em ui-monospace,Consolas,monospace;background:var(--code);padding:.18em .5em;border-radius:7px;white-space:nowrap}
+.prose img{max-width:100%;border-radius:18px;border:1px solid var(--line);cursor:zoom-in;display:block;margin-top:1.4em;background:var(--soft);transition:transform .4s var(--ease),box-shadow .4s}
+.prose img:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+.prose img+img{margin-top:.8em}
+.prose blockquote{border-radius:18px;background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--coral);padding:18px 22px}
+.prose blockquote p{margin:0}
+.prose .tw{overflow-x:auto;border:1px solid var(--line);border-radius:18px;background:var(--panel)}
+.prose table{border-collapse:collapse;width:100%;font-size:15px;min-width:520px}
+.prose th{text-align:left;font-weight:600;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:14px 18px;border-bottom:1px solid var(--line);white-space:nowrap}
+.prose td{padding:13px 18px;border-bottom:1px solid var(--line);vertical-align:top}
+.prose tr:last-child td{border:0}.prose tbody tr:hover{background:var(--soft)}
+.prose td:first-child{font-weight:500;color:var(--ink)}
+.prose .btn{display:inline-flex;align-items:center;height:50px;padding:0 26px;border-radius:999px;border:0;background:var(--grad);color:#2a1608;font-weight:600;font-size:15.5px;margin:6px 10px 0 0;box-shadow:0 18px 36px -14px rgba(242,139,120,.6);transition:transform .18s var(--ease)}
+.prose .btn:hover{transform:translateY(-2px);color:#2a1608}
+.prose .btn.ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink)}
+.prose .btn.ghost:hover{background:var(--ink);color:var(--bg)}
+
+.pn{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:70px;max-width:760px}
+.pn a{padding:22px 26px;border-radius:20px;border:1px solid var(--line);background:var(--panel);text-decoration:none;transition:transform .3s var(--ease),box-shadow .3s,border-color .3s}
+.pn a:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:var(--coral)}
+.pn small{display:block;color:var(--muted);font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:600}
+.pn b{font-family:Unbounded;font-size:16px;display:block;margin-top:8px}
+.pn .nx{text-align:right;grid-column:2}
+
+aside.toc{position:sticky;top:72px;align-self:start;padding:56px 0 40px;max-height:calc(100vh - 72px);overflow:auto}
+.toc h5{font-size:11.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+.toc a{display:block;padding:6px 0 6px 16px;border-left:1px solid var(--line);font-size:14px;color:var(--muted);text-decoration:none;transition:.2s;line-height:1.4}
+.toc a.l3{padding-left:30px;font-size:13.5px}
+.toc a:hover{color:var(--ink)}.toc a.on{color:var(--ink);border-left-color:var(--coral);font-weight:500}
+
+.lb{position:fixed;inset:0;z-index:100;background:rgba(15,10,20,.92);backdrop-filter:blur(12px);display:none;place-items:center;padding:30px;cursor:zoom-out}
+.lb.on{display:grid}.lb img{max-width:100%;max-height:90vh;border-radius:18px;background:#fff1}
+.skel{height:14px;border-radius:7px;background:linear-gradient(90deg,var(--soft),var(--line),var(--soft));background-size:200% 100%;animation:sh 1.2s infinite;margin:16px 0;max-width:600px}
+@keyframes sh{to{background-position:-200% 0}}
+
+@media(max-width:1180px){.shell{grid-template-columns:260px minmax(0,1fr);gap:40px}aside.toc{display:none}}
+@media(max-width:860px){
+  .shell{grid-template-columns:1fr;padding:0 20px}
+  .menu{display:grid}.links{display:none}.ib.menu{margin-left:auto}#sw{}
+  aside.nav{position:fixed;inset:72px 0 0 0;z-index:35;background:var(--bg);height:auto;padding:24px 20px;transform:translateX(-100%);transition:transform .4s var(--ease)}
+  .open aside.nav{transform:none}
+  .crumb{display:none}main{padding-top:30px}.cover{aspect-ratio:16/8;border-radius:20px}.pn{grid-template-columns:1fr}.pn .nx{grid-column:1}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="aura"><i></i><i></i></div>
+
+<header class="top"><div class="in">
+  <a href="/" class="brand"><i class="star"></i>ASTRUM</a>
+  <span class="crumb">Вики</span>
+  <nav class="links">
+    <a href="/">Главная</a>
+    <a href="/map">Карта</a>
+    <a href="https://shop.astrums.pro">Магазин</a>
+    <a href="https://discord.gg/7jnWGDB2fP">Discord</a>
+  </nav>
+  <button class="ib" id="sw" aria-label="День / ночь" title="День / ночь" style="margin-left:0">
+    <svg class="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    <svg class="moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5z"/></svg>
+  </button>
+  <button class="ib menu" id="menu" aria-label="Разделы"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+</div></header>
+
+<div class="shell">
+  <aside class="nav" id="nav">
+    <div class="search">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="q" placeholder="Поиск по вики" autocomplete="off"><kbd>/</kbd>
+      <div class="results" id="res"></div>
+    </div>
+    <div id="menuList"></div>
+    <a class="editlink" id="edit" href="admin/">Править эту страницу</a>
+  </aside>
+
+  <main>
+    <article id="art"><div class="skel"></div><div class="skel" style="width:60%"></div><div class="skel" style="width:80%"></div></article>
+    <div class="pn" id="pn"></div>
+  </main>
+
+  <aside class="toc" id="toc"></aside>
+</div>
+
+<div class="lb" id="lb"><img alt=""></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
+<script>
+/* Вики читает статьи из content/*.md и список из content/index.json (его собирает build.mjs). Править код не нужно — пишите статьи в редакторе /wiki/admin/ */
+const $=s=>document.querySelector(s);
+let PAGES=[],CACHE={};
+const base='content/';
+
+const parse=src=>{src=src.replace(/\r\n/g,'\n');const m=src.match(/^---\n([\s\S]*?)\n---\n?/),meta={};
+  if(m){m[1].split('\n').forEach(l=>{const i=l.indexOf(':');if(i>0)meta[l.slice(0,i).trim()]=l.slice(i+1).trim().replace(/^["']|["']$/g,'')});src=src.slice(m[0].length)}
+  return{meta,body:src}};
+const load=async slug=>{if(CACHE[slug])return CACHE[slug];const r=await fetch(base+slug+'.md');if(!r.ok)throw 0;return CACHE[slug]=parse(await r.text())};
+const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const slugify=t=>t.toLowerCase().replace(/[^\p{L}\p{N}]+/g,'-').replace(/^-|-$/g,'');
+
+function renderMenu(cur){
+  const groups={};PAGES.forEach(p=>(groups[p.group]=groups[p.group]||[]).push(p));
+  $('#menuList').innerHTML=Object.entries(groups).map(([g,ps])=>`<div class="grp">${esc(g)}</div>`+ps.map(p=>`<a class="item${p.slug===cur?' on':''}" href="#/${p.slug}">${esc(p.title)}</a>`).join('')).join('');
+}
+
+async function show(){
+  const slug=(location.hash.match(/^#\/([^/?#]+)/)||[])[1]||PAGES[0].slug;
+  const page=PAGES.find(p=>p.slug===slug)||PAGES[0];
+  renderMenu(page.slug);document.body.classList.remove('open');
+  $('#edit').href='admin/#/collections/articles/entries/'+page.slug;
+  let doc;try{doc=await load(page.slug)}catch(e){$('#art').innerHTML='<h1>Страница не найдена</h1><p class="prose">Выберите раздел слева.</p>';return}
+  document.title=page.title+' — Вики ASTRUM';
+  const md=doc.body.replace(/\[([^\]]+)\]\(([^)]+)\)\{\.btn( \.ghost)?\}/g,(_,t,u,g)=>`<a class="btn${g?' ghost':''}" href="${u}">${t}</a>`);
+  const html=marked.parse(md,{gfm:true,breaks:false});
+  $('#art').innerHTML=(doc.meta.cover?`<div class="cover"><img src="${esc(doc.meta.cover)}" alt=""></div>`:'')+
+    `<span class="eyebrow">${esc(page.group)}</span><h1>${esc(page.title)}</h1><div class="prose" id="prose">${html}</div>`;
+  const prose=$('#prose');
+  prose.querySelectorAll('h2,h3').forEach(h=>{h.id=slugify(h.textContent);h.insertAdjacentHTML('beforeend',`<a class="anc" href="#/${page.slug}">#</a>`);h.querySelector('.anc').onclick=e=>{e.preventDefault();navigator.clipboard&&navigator.clipboard.writeText(location.href.split('#')[0]+'#/'+page.slug);h.scrollIntoView()}});
+  prose.querySelectorAll('table').forEach(t=>{const w=document.createElement('div');w.className='tw';t.replaceWith(w);w.appendChild(t)});
+  prose.querySelectorAll('img').forEach(i=>{i.loading='lazy';i.onclick=()=>{$('#lb img').src=i.src;$('#lb').classList.add('on')}});
+  prose.querySelectorAll('a[href^="http"]').forEach(a=>{a.target='_blank';a.rel='noopener'});
+  buildToc(prose);
+  const i=PAGES.indexOf(page),pv=PAGES[i-1],nx=PAGES[i+1];
+  $('#pn').innerHTML=(pv?`<a href="#/${pv.slug}"><small>Назад</small><b>${esc(pv.title)}</b></a>`:'<span></span>')+(nx?`<a class="nx" href="#/${nx.slug}"><small>Дальше</small><b>${esc(nx.title)}</b></a>`:'');
+  scrollTo(0,0);
+}
+
+function buildToc(prose){
+  const hs=[...prose.querySelectorAll('h2,h3')];
+  $('#toc').innerHTML=hs.length>1?'<h5>На этой странице</h5>'+hs.map(h=>`<a class="${h.tagName==='H3'?'l3':''}" href="#" data-id="${h.id}">${esc(h.firstChild.textContent)}</a>`).join(''):'';
+  $('#toc').querySelectorAll('a').forEach(a=>a.onclick=e=>{e.preventDefault();document.getElementById(a.dataset.id).scrollIntoView()});
+  window._hs=hs;spy();
+}
+function spy(){
+  const hs=window._hs||[];let cur=null;
+  hs.forEach(h=>{if(h.getBoundingClientRect().top<140)cur=h.id});
+  document.querySelectorAll('#toc a').forEach(a=>a.classList.toggle('on',a.dataset.id===cur));
+}
+addEventListener('scroll',spy,{passive:true});
+
+/* поиск по названиям и тексту статей */
+let sel=-1;
+async function search(q){
+  const box=$('#res');q=q.trim().toLowerCase();
+  if(!q){box.classList.remove('on');return}
+  await Promise.all(PAGES.map(p=>load(p.slug).catch(()=>0)));
+  const out=[];
+  PAGES.forEach(p=>{const d=CACHE[p.slug];if(!d)return;const text=d.body.replace(/!\[[^\]]*\]\([^)]*\)/g,'').replace(/[#*`>|\[\]]/g,' ').replace(/\(http[^)]*\)/g,'').replace(/\s+/g,' ');
+    const ti=p.title.toLowerCase().includes(q),i=text.toLowerCase().indexOf(q);
+    if(ti||i>-1)out.push({p,snip:i>-1?text.slice(Math.max(0,i-30),i+80):'',q,rank:ti?0:1})});
+  out.sort((a,b)=>a.rank-b.rank);sel=-1;
+  const hl=s=>esc(s).replace(new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'gi'),m=>`<mark>${m}</mark>`);
+  box.innerHTML=out.length?out.slice(0,7).map(o=>`<a href="#/${o.p.slug}"><b>${hl(o.p.title)}</b><small>${hl(o.snip)}</small></a>`).join(''):'<div class="none">Ничего не найдено</div>';
+  box.classList.add('on');
+}
+$('#q').addEventListener('input',e=>search(e.target.value));
+$('#q').addEventListener('keydown',e=>{const a=[...document.querySelectorAll('#res a')];
+  if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();sel=(sel+(e.key==='ArrowDown'?1:-1)+a.length)%a.length;a.forEach((x,i)=>x.classList.toggle('sel',i===sel))}
+  if(e.key==='Enter'&&a.length){(a[sel]||a[0]).click();$('#q').blur()}
+  if(e.key==='Escape'){$('#res').classList.remove('on');$('#q').blur()}});
+document.addEventListener('click',e=>{if(!e.target.closest('.search'))$('#res').classList.remove('on');else if(e.target.closest('#res a'))$('#res').classList.remove('on')});
+addEventListener('keydown',e=>{if(e.key==='/'&&!/INPUT|TEXTAREA/.test(document.activeElement.tagName)){e.preventDefault();$('#q').focus()}if(e.key==='Escape')$('#lb').classList.remove('on')});
+
+$('#lb').onclick=()=>$('#lb').classList.remove('on');
+$('#menu').onclick=()=>document.body.classList.toggle('open');
+$('#sw').onclick=()=>{const r=document.documentElement,s=r.dataset.sky==='night'?'day':'night';r.dataset.sky=s;try{localStorage.setItem('astrum-sky',s)}catch(e){}};
+addEventListener('hashchange',show);
+
+fetch(base+'index.json').then(r=>r.json()).then(j=>{PAGES=j;show()}).catch(()=>{$('#art').innerHTML='<h1>Вики пока недоступна</h1><p class="prose">Не удалось загрузить список статей.</p>'});
+</script>
+</body>
+</html>

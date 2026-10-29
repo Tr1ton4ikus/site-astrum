@@ -1,0 +1,44 @@
+[
+  {
+    "slug": "info",
+    "title": "Основная информация",
+    "group": "Начало",
+    "order": 1
+  },
+  {
+    "slug": "how-play",
+    "title": "Как играть",
+    "group": "Начало",
+    "order": 2
+  },
+  {
+    "slug": "links",
+    "title": "Ссылки",
+    "group": "Начало",
+    "order": 3
+  },
+  {
+    "slug": "commands",
+    "title": "Команды",
+    "group": "Нововведения",
+    "order": 4
+  },
+  {
+    "slug": "mechanics",
+    "title": "Разные механики",
+    "group": "Нововведения",
+    "order": 5
+  },
+  {
+    "slug": "crafts",
+    "title": "Крафты",
+    "group": "Нововведения",
+    "order": 6
+  },
+  {
+    "slug": "brewery",
+    "title": "Варка алкоголя",
+    "group": "Нововведения",
+    "order": 7
+  }
+]
