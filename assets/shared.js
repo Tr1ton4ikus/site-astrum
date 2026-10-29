@@ -32,13 +32,16 @@ document.getElementById('sw').addEventListener('click', () => {
   try { localStorage.setItem('astrum-sky', s); } catch (e) {}
 });
 
-/* онлайн сервера — после отрисовки страницы, в свободное время браузера */
-const online = () => fetch('https://api.mcsrvstat.us/3/' + IP)
+/* статус сервера и число игроков — после отрисовки страницы, в свободное время браузера */
+const plural = n => n % 10 === 1 && n % 100 !== 11 ? 'игрок' : [2, 3, 4].includes(n % 10) && ![12, 13, 14].includes(n % 100) ? 'игрока' : 'игроков';
+const loadStatus = () => fetch('https://api.mcsrvstat.us/3/' + IP)
   .then(r => r.json())
   .then(d => {
-    const n = d && d.players ? d.players.online : null;
-    root.dataset.live = n == null ? 'off' : 'on';
-    document.querySelectorAll('[data-online]').forEach(el => el.textContent = n == null ? '—' : n);
+    const on = d && d.online, n = on && d.players ? d.players.online : 0;
+    const box = document.getElementById('status');
+    box.classList.toggle('off', !on);
+    box.children[1].textContent = on ? 'Сервер онлайн' : 'Сервер оффлайн';
+    document.getElementById('count').textContent = on ? '· ' + n + ' ' + plural(n) : '';
   })
-  .catch(() => { root.dataset.live = 'off'; });
-(window.requestIdleCallback || setTimeout)(online, 1500);
+  .catch(() => {});
+setTimeout(() => (window.requestIdleCallback || (f => f()))(loadStatus), 800);
