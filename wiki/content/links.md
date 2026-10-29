@@ -16,6 +16,7 @@ cover: https://astrums.pro/links.avif
 ### Основные ссылки
 
 - Покупка доната — [shop.astrums.pro](https://shop.astrums.pro)
+- Сборка модов — [modrinth.com/modpack/astrum](https://modrinth.com/modpack/astrum)
 - Мониторинг — [hotmc.ru](https://hotmc.ru/minecraft-server-261288)
 
 ### Социальные сети
