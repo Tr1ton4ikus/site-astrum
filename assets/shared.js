@@ -19,18 +19,25 @@ document.querySelectorAll('nav a').forEach(a => a.addEventListener('click', () =
 const nav = document.getElementById('nav');
 addEventListener('scroll', () => nav.classList.toggle('solid', scrollY > 30), { passive: true });
 
-/* ночная картинка подгружается только когда нужна */
-const night = document.querySelector('img.night');
-const loadNight = () => { if (night.dataset.src) { night.src = night.dataset.src; delete night.dataset.src; } };
-if (root.dataset.sky === 'night') loadNight();
+/* картинка героя подгружается под текущую тему */
+const loadSky = () => document.querySelectorAll('.pic img[data-src]').forEach(i => {
+  if (i.classList.contains(root.dataset.sky)) { i.src = i.dataset.src; delete i.dataset.src; }
+});
+loadSky();
 
 /* переключатель день/ночь */
 document.getElementById('sw').addEventListener('click', () => {
   const s = root.dataset.sky === 'night' ? 'day' : 'night';
   root.dataset.sky = s;
-  if (s === 'night') loadNight();
+  loadSky();
   try { localStorage.setItem('astrum-sky', s); } catch (e) {}
 });
+
+/* мягкое появление блоков при прокрутке */
+if ('IntersectionObserver' in window) {
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .12 });
+  document.querySelectorAll('.p,.rows a,.step,details,.disc,.label').forEach(el => { el.classList.add('rv'); io.observe(el); });
+}
 
 /* статус сервера и число игроков — после отрисовки страницы, в свободное время браузера */
 const plural = n => n % 10 === 1 && n % 100 !== 11 ? 'игрок' : [2, 3, 4].includes(n % 10) && ![12, 13, 14].includes(n % 100) ? 'игрока' : 'игроков';

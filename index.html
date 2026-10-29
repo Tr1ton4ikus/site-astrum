@@ -7,7 +7,8 @@
 <meta name="description" content="ASTRUM — приватный ванильный полу-РП Minecraft-сервер без приватов. Города, свобода и живой мир. Java Edition, лицензия не нужна. IP: astrums.pro">
 <meta name="keywords" content="Minecraft, майнкрафт, сервер, ванильный, Astrum, РП, полу-РП, приватный сервер, без привата, Java Edition, карта, вики, Discord">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
-<meta name="theme-color" content="#f3eee4">
+<meta name="theme-color" content="#0f0a1a">
+<meta name="color-scheme" content="dark light">
 <link rel="canonical" href="__SITE__/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="ASTRUM">
@@ -27,18 +28,19 @@
 <link rel="icon" href="assets/logo.webp" type="image/webp">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"__SITE__/#site","url":"__SITE__/","name":"ASTRUM","inLanguage":"ru-RU","description":"Ванильный полу-РП Minecraft-сервер"},{"@type":"Organization","@id":"__SITE__/#org","name":"ASTRUM","url":"__SITE__/","logo":"__SITE__/assets/logo.webp","sameAs":["https://discord.gg/7jnWGDB2fP","https://t.me/ast_mc","https://www.youtube.com/@Astrum_mc"]}]}</script>
+<link rel="preload" as="image" href="assets/cave.webp" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@600;700&family=Onest:wght@400;600&display=swap" media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@600;700&family=Onest:wght@400;600&display=swap"></noscript>
 <script>
 (function(){var s=null;try{s=localStorage.getItem('astrum-sky')}catch(e){}
-if(!s){var h=new Date().getHours();s=(h>=7&&h<19)?'day':'night'}
+if(!s){var h=new Date().getHours();s='night'}
 document.documentElement.dataset.sky=s})();
 </script>
 <style>
-:root{--paper:#f3eee4;--ink:#1b1714;--muted:#6f655b;--rule:#1b17142e;--accent:#e4572e;--tile:#e9e2d3}
-html[data-sky=night]{--paper:#16120f;--ink:#f2eadd;--muted:#a39888;--rule:#f2eadd2e;--accent:#ff7a4d;--tile:#201a16}
+:root{--paper:#f5f0ff;--tile:#ebe3fb;--ink:#1a1033;--muted:#6a5d88;--rule:#1a103329;--accent:#7e22ce;--btn:#7e22ce;--hot:#c026d3}
+html[data-sky=night]{--paper:#0f0a1a;--tile:#1a1230;--ink:#f3eefc;--muted:#a79bc4;--rule:#f3eefc26;--accent:#a855f7;--btn:#9333ea;--hot:#f472d0}
 *{box-sizing:border-box;margin:0}
 html{scroll-behavior:smooth;overflow-x:clip}
 body{font-family:Onest,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);background:var(--paper);line-height:1.6;font-size:17px}
@@ -47,7 +49,9 @@ a{color:inherit;text-decoration:none}
 .wrap{width:min(1180px,100% - 48px);margin-inline:auto}
 .logo{width:28px;height:28px;display:block}
 
-nav{position:sticky;top:0;z-index:50;background:var(--paper);border-bottom:1px solid var(--rule)}
+nav{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--paper) 78%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--rule)}
+#bg{position:fixed;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none}
+.rv{opacity:0;transform:translateY(16px);transition:opacity .6s,transform .6s cubic-bezier(.16,1,.3,1)}.rv.in{opacity:1;transform:none}
 nav .wrap{display:flex;align-items:center;gap:30px;height:68px}
 .brand{font-size:24px;letter-spacing:.14em;display:flex;align-items:center;gap:12px}
 nav ul{display:flex;gap:26px;list-style:none;padding:0;margin-left:auto}
@@ -58,7 +62,7 @@ nav ul a:hover{border-color:var(--accent)}
 .sw .moon{display:none}html[data-sky=night] .sw .moon{display:block}html[data-sky=night] .sw .sun{display:none}
 .btn{display:inline-flex;align-items:center;height:52px;padding:0 28px;border-radius:4px;font-weight:600;font-size:15px;letter-spacing:.06em;text-transform:uppercase;border:2px solid var(--ink);cursor:pointer;font-family:inherit;background:none;color:var(--ink)}
 .btn:hover{background:var(--ink);color:var(--paper)}
-.btn-main{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn-main{background:var(--btn);border-color:var(--btn);color:#fff}
 .btn-main:hover{background:var(--ink);border-color:var(--ink);color:var(--paper)}
 .btn-sm{height:40px;padding:0 18px;font-size:13px}
 .burger{display:none;width:38px;height:38px;border:1px solid var(--ink);border-radius:4px;background:none;cursor:pointer;position:relative}
@@ -68,21 +72,22 @@ nav ul a:hover{border-color:var(--accent)}
 .hero{padding:64px 0 90px}
 .hero .wrap{display:grid;grid-template-columns:7fr 5fr;gap:56px;align-items:end}
 h1{font-size:clamp(64px,11vw,168px);margin-bottom:34px}
-h1 span{color:var(--accent);display:block}
+h1 span{color:var(--hot);display:block}
 .sub{font-size:20px;color:var(--muted);max-width:430px}
 .cta{display:flex;gap:14px;flex-wrap:wrap;margin-top:34px}
 .ip{display:inline-flex;margin-top:30px;border:1px solid var(--ink);border-radius:4px;cursor:pointer;background:none;color:inherit;font-family:inherit;font-size:16px;align-items:stretch;padding:0}
 .ip b{font-family:Oswald,sans-serif;font-size:22px;letter-spacing:.06em;padding:10px 20px;font-weight:600}
-.ip span{background:var(--ink);color:var(--paper);padding:0 16px;display:grid;place-items:center;font-size:12.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
-.ip:hover span{background:var(--accent);color:#fff}
-figure.plate{background:var(--tile);padding:10px;border:1px solid var(--rule)}
-.pic{position:relative;aspect-ratio:4/5;overflow:hidden;background:#d9c9b8}
+.ip span{background:var(--btn);color:#fff;padding:0 16px;display:grid;place-items:center;font-size:12.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
+.ip:hover span{background:var(--hot);color:#1a1033}
+figure.plate{background:var(--tile);padding:10px;border:1px solid var(--rule);box-shadow:8px 8px 0 var(--btn)}
+.pic{position:relative;aspect-ratio:4/5;overflow:hidden;background:#2a1d4a}
 .pic img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .5s}
 .pic img.night{opacity:0}html[data-sky=night] .pic img.night{opacity:1}html[data-sky=night] .pic img.day{opacity:0}
 figcaption{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:12px 4px 4px;font-size:13.5px;color:var(--muted)}
 .status{display:flex;align-items:center;gap:9px;color:var(--ink);font-weight:600}
-.status i{width:9px;height:9px;border-radius:50%;background:#2fa65a;display:block}
-.status.off i{background:#c0392b}
+.status i{width:9px;height:9px;border-radius:50%;background:#3ddc84;display:block;box-shadow:0 0 0 0 #3ddc8488;animation:ping 2s infinite}
+@keyframes ping{70%{box-shadow:0 0 0 8px #3ddc8400}100%{box-shadow:0 0 0 0 #3ddc8400}}
+.status.off i{background:#ff5a5a;animation:none}
 
 section{padding:96px 0}
 .label{display:flex;gap:14px;align-items:center;font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:30px}
@@ -99,7 +104,7 @@ section{padding:96px 0}
 .rows .th{grid-column:3;grid-row:1/3;height:110px;overflow:hidden;background:var(--tile)}
 .rows .th img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.05);transition:filter .3s}
 .rows .ar{font-family:Oswald,sans-serif;font-size:34px;color:var(--ink);grid-column:4;grid-row:1/3;transition:transform .2s,color .2s}
-.rows a:hover h3,.rows a:hover .ar{color:var(--accent)}.rows a:hover .th img{filter:none}.rows a:hover .ar{transform:translateX(6px)}
+.rows a:hover h3,.rows a:hover .ar{color:var(--hot)}.rows a:hover .th img{filter:none}.rows a:hover .ar{transform:translateX(6px)}
 .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:0}
 .step{padding:0 34px 0 0}.step+.step{padding-left:34px;border-left:1px solid var(--rule)}
 .step .big{font-size:90px;color:var(--accent);display:block;margin-bottom:14px}
@@ -111,7 +116,7 @@ summary{cursor:pointer;font-weight:600;font-size:19px;list-style:none;display:fl
 summary::after{content:"+";font-family:Oswald,sans-serif;font-size:30px;line-height:.8;color:var(--accent)}
 details[open] summary::after{content:"–"}
 details p{color:var(--muted);margin-top:10px}
-.disc{background:var(--accent);color:#fff;padding:72px 56px;margin-bottom:96px;display:flex;justify-content:space-between;gap:32px;align-items:center;flex-wrap:wrap}
+.disc{background:var(--btn);color:#fff;padding:72px 56px;margin-bottom:96px;display:flex;justify-content:space-between;gap:32px;align-items:center;flex-wrap:wrap}
 .disc h2{font-size:clamp(44px,6vw,86px);max-width:640px}
 .disc p{margin-top:16px;max-width:420px;opacity:.92}
 .disc .btn{background:var(--ink);border-color:var(--ink);color:#fff}
@@ -134,10 +139,11 @@ footer ul{display:flex;gap:24px;list-style:none;padding:0}footer a:hover{color:v
   section{padding:68px 0}.disc{padding:48px 26px}
 }
 @media(max-width:620px){.pr{grid-template-columns:1fr}.p,.p+.p{border:0;padding:0}.nav-btn{display:none}.hero{padding-top:36px}}
-@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}.rv{opacity:1;transform:none}}
 </style>
 </head>
 <body>
+<canvas id="bg" aria-hidden="true"></canvas>
 
 <nav id="nav"><div class="wrap">
   <a href="./" class="brand" aria-label="ASTRUM — главная"><img class="logo" src="assets/logo.webp" width="28" height="28" alt="">ASTRUM</a>
@@ -169,8 +175,8 @@ footer ul{display:flex;gap:24px;list-style:none;padding:0}footer a:hover{color:v
     </div>
     <figure class="plate">
       <div class="pic">
-        <img class="day" src="assets/sunset.webp" width="1280" height="720" fetchpriority="high" decoding="async" alt="Закат над миром ASTRUM">
-        <img class="night" data-src="assets/cave.webp" width="1400" height="788" decoding="async" alt="Ночной мир ASTRUM">
+        <img class="day" data-src="assets/sunset.webp" width="1280" height="720" decoding="async" alt="Закат над миром ASTRUM">
+        <img class="night" src="assets/cave.webp" width="1400" height="788" fetchpriority="high" decoding="async" alt="Ночной мир ASTRUM">
       </div>
       <figcaption><span class="status" id="status"><i></i><span>Сервер онлайн</span><span id="count"></span></span><span>Java Edition</span></figcaption>
     </figure>
@@ -239,6 +245,7 @@ footer ul{display:flex;gap:24px;list-style:none;padding:0}footer a:hover{color:v
 </div></footer>
 
 <div class="toast" id="toast" role="status">IP скопирован</div>
+<script src="assets/bg.js" defer></script>
 <script src="assets/shared.js" defer></script>
 </body>
 </html>
