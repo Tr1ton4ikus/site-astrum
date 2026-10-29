@@ -22,12 +22,11 @@ node wiki/dev.mjs
 ```
 Откройте http://localhost:8080/wiki/admin/ — редактор сохраняет статьи прямо в `wiki/content/`, список в меню обновляется сам. Читать результат: http://localhost:8080/wiki/.
 
-**Ваш случай — astrums.pro стоит на GitHub Pages** (так отвечает сервер сайта), значит:
-1. Скопируйте папки `wiki/` и `.github/` в репозиторий сайта (в корень, рядом с главной страницей).
-2. В `wiki/admin/config.yml` замените `OWNER/REPO` на `ваш-ник/репозиторий`.
-3. Для входа в редактор на GitHub Pages нужен небольшой OAuth-прокси (бесплатный Cloudflare Worker, например `sveltia-cms-auth`) — адрес впишите в `base_url`.
-   Проще без прокси: заменить в `wiki/admin/index.html` ссылку на скрипт на `https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js` — это совместимый с Decap редактор, в который можно войти по личному токену GitHub. Конфиг остаётся тем же.
-4. Каждая публикация статьи — это коммит в репозиторий; GitHub Pages обновит вики за 1–2 минуты.
+**Ваш случай — сайт на GitHub Pages (репозиторий Tr1ton4ikus/site-astrum), редактор — Sveltia CMS:**
+1. Откройте https://tr1ton4ikus.github.io/site-astrum/wiki/admin/ и нажмите **«Войти с помощью токена доступа»**.
+2. Токен создаётся один раз: GitHub → Settings → Developer settings → Personal access tokens → Fine-grained → доступ только к репозиторию site-astrum, права **Contents: Read and write**. Вставьте его в редактор.
+3. Пишите статьи. Каждая публикация — коммит в репозиторий; сайт обновится сам за 1–2 минуты (за это отвечает .github/workflows/pages.yml).
+4. Вернуться на классический Decap CMS можно, поменяв script в wiki/admin/index.html (для входа тогда нужен OAuth-прокси).
 
 **Вариант B — общий порядок (любой хостинг на GitHub):**
 1. Положите сайт в репозиторий GitHub, в `wiki/admin/config.yml` замените `OWNER/REPO` на свой.
