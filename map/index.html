@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="ru" data-sky="day">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Карта — ASTRUM</title>
+<meta name="description" content="Живая карта мира ASTRUM: города, спавн, граница и игроки онлайн.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Onest:wght@400;500;600&display=swap" rel="stylesheet">
+<script>
+(function(){var s=null;try{s=localStorage.getItem('astrum-sky')}catch(e){}
+if(!s){var h=new Date().getHours();s=(h>=7&&h<19)?'day':'night'}
+document.documentElement.dataset.sky=s})();
+</script>
+<style>
+:root{
+  --bg:#f8f5ef; --ink:#252321; --muted:#7a726b; --line:#2523211a; --soft:#2523210a; --glass:#ffffffcc; --card:#fff;
+  --coral:#f28b78; --gold:#e8b66a; --grad:linear-gradient(120deg,#f28b78,#e8b66a);
+  --shadow:0 24px 80px rgba(73,49,36,.18); --ease:cubic-bezier(.16,1,.3,1); --bar:72px;
+}
+html[data-sky=night]{--bg:#14101f;--ink:#f3eefb;--muted:#a79dba;--line:#ffffff1c;--soft:#ffffff0d;--glass:#1b1530cc;--card:#1e1733;--shadow:0 24px 80px rgba(0,0,0,.5)}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%;overflow:hidden}
+body{font-family:Onest,system-ui,sans-serif;color:var(--ink);background:var(--bg);font-size:16px;line-height:1.5;transition:background .6s,color .6s}
+h1,h2,h3,.brand{font-family:Unbounded,sans-serif;letter-spacing:-.025em;line-height:1.1}
+a{color:inherit;text-decoration:none}button{font-family:inherit}
+
+/* верхняя панель */
+.top{position:fixed;inset:0 0 auto 0;height:var(--bar);z-index:30;display:flex;align-items:center;gap:20px;padding:0 24px;background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:blur(18px) saturate(1.4);border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:12px;font-weight:900;font-size:17px;letter-spacing:.2em}
+.star{width:22px;height:22px;background:var(--grad);clip-path:polygon(50% 0,62% 38%,100% 50%,62% 62%,50% 100%,38% 62%,0 50%,38% 38%)}
+.crumb{color:var(--muted);font-size:14px;font-weight:500;padding-left:18px;border-left:1px solid var(--line)}
+.links{display:flex;gap:4px;margin-left:auto}
+.links a{padding:8px 14px;border-radius:999px;font-size:14.5px;font-weight:500;color:var(--muted);transition:.2s}
+.links a:hover{color:var(--ink);background:var(--soft)}
+.ib{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:var(--glass);cursor:pointer;display:grid;place-items:center;color:var(--ink);transition:transform .3s var(--ease),border-color .2s;flex:none}
+.ib:hover{border-color:var(--coral)}.ib svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+#sw:hover{transform:rotate(25deg)}.moon{display:none}html[data-sky=night] .moon{display:block}html[data-sky=night] .sun{display:none}
+
+/* карта */
+.stage{position:fixed;inset:var(--bar) 0 0 0}
+.stage iframe{position:absolute;inset:0;width:100%;height:100%;border:0;opacity:0;transition:opacity .8s}
+.stage.ready iframe{opacity:1}
+.load{position:absolute;inset:0;display:grid;place-items:center;text-align:center;color:var(--muted);transition:opacity .6s;background:var(--bg)}
+.stage.ready .load{opacity:0;pointer-events:none}
+.load .star{width:46px;height:46px;margin:0 auto 18px;animation:spin 3s linear infinite}
+@keyframes spin{50%{transform:rotate(180deg) scale(1.2)}to{transform:rotate(360deg)}}
+
+/* панель мест */
+.panel{position:absolute;left:20px;top:20px;width:320px;max-height:calc(100% - 40px);display:flex;flex-direction:column;border-radius:26px;background:var(--glass);backdrop-filter:blur(22px) saturate(1.5);border:1px solid var(--line);box-shadow:var(--shadow);overflow:hidden;z-index:5;transition:transform .5s var(--ease),opacity .4s}
+.panel.hide{transform:translateX(-360px);opacity:0;pointer-events:none}
+.ph{padding:22px 24px 14px;position:relative}.ph .x{position:absolute;right:16px;top:16px;width:34px;height:34px}.ph .x svg{width:15px;height:15px}
+.ph h1{font-size:22px;font-weight:900}
+.live{display:flex;align-items:center;gap:10px;margin-top:10px;font-size:13.5px;color:var(--muted);font-weight:500}
+.live i{width:9px;height:9px;border-radius:50%;background:#35c46a;box-shadow:0 0 0 4px #35c46a33;animation:pu 2.2s infinite}
+@keyframes pu{50%{box-shadow:0 0 0 8px #35c46a00}}
+html:not([data-live=on]) .live-only{display:none}
+.lbl{font-size:11.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);padding:6px 24px 8px}
+.list{overflow:auto;padding:0 12px 6px}
+.place{display:flex;align-items:center;gap:14px;width:100%;padding:12px;border:0;background:transparent;border-radius:16px;cursor:pointer;text-align:left;color:inherit;transition:background .2s,transform .3s var(--ease)}
+.place:hover{background:var(--soft);transform:translateX(4px)}
+.place.on{background:var(--card);box-shadow:0 1px 0 var(--line),0 10px 26px -14px rgba(73,49,36,.3)}
+.pin{width:38px;height:38px;border-radius:13px;display:grid;place-items:center;flex:none;background:var(--grad)}
+.pin svg{width:19px;height:19px;stroke:#2a1608;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.place b{display:block;font-size:15.5px;font-weight:600}
+.place small{color:var(--muted);font-size:12.5px;font-variant-numeric:tabular-nums}
+.go{padding:14px 24px 22px;border-top:1px solid var(--line);margin-top:6px}
+.go form{display:flex;gap:8px}
+.go input{min-width:0;flex:1;height:44px;border-radius:14px;border:1px solid var(--line);background:var(--card);padding:0 14px;font:inherit;font-size:14.5px;color:var(--ink);outline:0;transition:border-color .2s,box-shadow .2s}
+.go input:focus{border-color:var(--coral);box-shadow:0 0 0 4px #f28b7826}
+.go button{height:44px;padding:0 18px;border:0;border-radius:14px;background:var(--grad);color:#2a1608;font-weight:600;font-size:14.5px;cursor:pointer;transition:transform .18s var(--ease)}
+.go button:hover{transform:translateY(-2px)}.go button:active{transform:scale(.97)}
+.go p{font-size:12.5px;color:var(--muted);margin-top:9px}
+
+/* плавающие кнопки */
+.fab{position:absolute;right:20px;top:20px;display:flex;gap:10px;z-index:5}
+.chip{display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 16px;border-radius:999px;background:var(--glass);backdrop-filter:blur(16px);border:1px solid var(--line);font-size:14px;font-weight:600;cursor:pointer;color:var(--ink);transition:transform .2s var(--ease),border-color .2s;box-shadow:0 10px 30px -14px rgba(0,0,0,.35)}
+.chip:hover{transform:translateY(-2px);border-color:var(--coral)}
+.chip svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.open{position:absolute;left:20px;top:20px;z-index:4;display:none}
+.panel.hide~.open{display:inline-flex}
+
+.toast{position:fixed;bottom:28px;left:50%;transform:translate(-50%,100px);background:var(--ink);color:var(--bg);padding:13px 24px;border-radius:999px;font-weight:600;font-size:14.5px;transition:transform .4s var(--ease);z-index:50}
+.toast.show{transform:translate(-50%,0)}
+
+@media(max-width:760px){
+  :root{--bar:64px}.top{padding:0 16px}.links,.crumb{display:none}.ib.sp{margin-left:auto}
+  .panel{left:12px;right:12px;top:auto;bottom:12px;width:auto;max-height:56%}
+  .panel.hide{transform:translateY(120%)}
+  .fab{right:12px;top:12px}.chip .t{display:none}.chip{padding:0 13px}.open{left:12px;top:12px}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <a href="../" class="brand"><i class="star"></i>ASTRUM</a>
+  <span class="crumb">Карта</span>
+  <nav class="links">
+    <a href="../">Главная</a>
+    <a href="../wiki/">Вики</a>
+    <a href="https://shop.astrums.pro">Магазин</a>
+    <a href="https://discord.gg/7jnWGDB2fP">Discord</a>
+  </nav>
+  <button class="ib sp" id="sw" aria-label="День / ночь" title="День / ночь">
+    <svg class="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    <svg class="moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5z"/></svg>
+  </button>
+</header>
+
+<main class="stage" id="stage">
+  <iframe id="map" title="Карта мира ASTRUM" allow="fullscreen"></iframe>
+  <div class="load"><div><i class="star"></i>Загружаем звёздную карту…</div></div>
+
+  <aside class="panel" id="panel">
+    <div class="ph">
+      <button class="ib x" id="closePanel" aria-label="Скрыть панель" title="Скрыть панель"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+      <h1>Карта мира</h1>
+      <div class="live"><i></i><span class="live-only"><b data-online>—</b> игроков онлайн · </span>обновляется в реальном времени</div>
+    </div>
+    <div class="lbl">Места</div>
+    <div class="list" id="places"></div>
+    <div class="go">
+      <form id="goForm"><input id="gx" inputmode="numeric" placeholder="X" aria-label="X"><input id="gz" inputmode="numeric" placeholder="Z" aria-label="Z"><button>Перейти</button></form>
+      <p>Введите координаты, чтобы переместить карту.</p>
+    </div>
+  </aside>
+
+  <div class="fab">
+    <button class="chip" id="share" title="Скопировать ссылку на это место"><svg viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg><span class="t">Ссылка</span></button>
+    <button class="chip" id="full" title="Во весь экран"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg><span class="t">Во весь экран</span></button>
+    <a class="chip" href="https://map.astrums.pro/" target="_blank" rel="noopener" title="Открыть оригинал"><svg viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg><span class="t">Оригинал</span></a>
+  </div>
+  <button class="chip open" id="openPanel"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg><span class="t">Места</span></button>
+</main>
+
+<div class="toast" id="toast">Ссылка скопирована</div>
+<script src="../assets/shared.js"></script>
+<script>
+/* Карту рисует squaremap + LiveAtlas на map.astrums.pro — здесь она встроена в свой интерфейс.
+   Чтобы добавить место в список, допишите строку в PLACES: [название, подпись, X, Z]. */
+const MAP='https://map.astrums.pro/', WORLD='minecraft_overworld', ZOOM=3;
+const PLACES=[
+  ['Спавн','Центр мира',-99,-23],
+  ['Машина расширения барьера','Расширение границы мира',-444,-67],
+  ['Город EDINSTVO','Город',-1029,825],
+  ['Город Хайп','Город',-1275,-3025],
+];
+const $=s=>document.querySelector(s),map=$('#map'),stage=$('#stage');
+const pinSvg='<svg viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>';
+let cur=null;
+
+function goTo(x,z,i){
+  x=Math.round(x);z=Math.round(z);cur={x,z};
+  map.src=`${MAP}#${WORLD};flat;${x},64,${z};${ZOOM}`;
+  document.querySelectorAll('.place').forEach((p,k)=>p.classList.toggle('on',k===i));
+  const u=new URL(location.href);u.searchParams.set('x',x);u.searchParams.set('z',z);history.replaceState(null,'',u);
+  if(innerWidth<=760&&i!=null)$('#panel').classList.add('hide');
+}
+$('#places').innerHTML=PLACES.map((p,i)=>`<button class="place" data-i="${i}"><span class="pin">${pinSvg}</span><span><b>${p[0]}</b><small>${p[1]} · ${p[2]}, ${p[3]}</small></span></button>`).join('');
+$('#places').addEventListener('click',e=>{const b=e.target.closest('.place');if(b){const p=PLACES[b.dataset.i];goTo(p[2],p[3],+b.dataset.i)}});
+$('#goForm').addEventListener('submit',e=>{e.preventDefault();const x=parseFloat($('#gx').value),z=parseFloat($('#gz').value);if(isFinite(x)&&isFinite(z))goTo(x,z,null)});
+
+/* стартовая точка: из ссылки (?x=&z=) или спавн */
+const q=new URLSearchParams(location.search),qx=parseFloat(q.get('x')),qz=parseFloat(q.get('z'));
+if(isFinite(qx)&&isFinite(qz))goTo(qx,qz,null);else goTo(PLACES[0][2],PLACES[0][3],0);
+map.addEventListener('load',()=>stage.classList.add('ready'));
+setTimeout(()=>stage.classList.add('ready'),6000);
+
+const tt=$('#toast'),say=t=>{tt.textContent=t;tt.classList.add('show');setTimeout(()=>tt.classList.remove('show'),1800)};
+$('#share').onclick=()=>{try{navigator.clipboard.writeText(location.href)}catch(e){}say('Ссылка скопирована')};
+$('#full').onclick=()=>{const el=document.documentElement;document.fullscreenElement?document.exitFullscreen():el.requestFullscreen&&el.requestFullscreen()};
+$('#closePanel').onclick=()=>$('#panel').classList.add('hide');
+$('#openPanel').onclick=()=>$('#panel').classList.remove('hide');
+$('#sw').onclick=()=>{const r=document.documentElement,s=r.dataset.sky==='night'?'day':'night';r.dataset.sky=s;try{localStorage.setItem('astrum-sky',s)}catch(e){}};
+</script>
+</body>
+</html>
