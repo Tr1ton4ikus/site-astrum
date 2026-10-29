@@ -1,37 +1,44 @@
-/* ASTRUM — общий скрипт для всех шаблонов */
+/* ASTRUM — скрипт главной страницы (подключается с defer) */
 const IP = 'astrums.pro';
+const root = document.documentElement;
 
-/* копирование IP + уведомление */
+/* копирование IP */
 const toast = document.getElementById('toast');
 document.querySelectorAll('[data-ip]').forEach(b => b.addEventListener('click', () => {
   try { navigator.clipboard.writeText(IP); } catch (e) {}
-  if (!toast) return;
   toast.classList.add('show');
-  setTimeout(() => toast.classList.remove('show'), 1800);
+  setTimeout(() => toast.classList.remove('show'), 1600);
 }));
-
-/* появление блоков при прокрутке */
-const io = new IntersectionObserver(es => es.forEach(x => {
-  if (x.isIntersecting) { x.target.classList.add('in'); io.unobserve(x.target); }
-}), { threshold: .12 });
-document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
 /* мобильное меню */
 const burger = document.querySelector('.burger');
-if (burger) {
-  burger.addEventListener('click', () => document.body.classList.toggle('menu-open'));
-  document.querySelectorAll('nav a').forEach(a => a.addEventListener('click', () => document.body.classList.remove('menu-open')));
-}
+burger.addEventListener('click', () => document.body.classList.toggle('menu-open'));
+document.querySelectorAll('nav a').forEach(a => a.addEventListener('click', () => document.body.classList.remove('menu-open')));
 
-/* живой онлайн сервера (если API недоступен — показываем тире) */
-fetch('https://api.mcsrvstat.us/3/' + IP)
+/* шапка получает фон при прокрутке */
+const nav = document.getElementById('nav');
+addEventListener('scroll', () => nav.classList.toggle('solid', scrollY > 30), { passive: true });
+
+/* ночная картинка подгружается только когда нужна */
+const night = document.querySelector('img.night');
+const loadNight = () => { if (night.dataset.src) { night.src = night.dataset.src; delete night.dataset.src; } };
+if (root.dataset.sky === 'night') loadNight();
+
+/* переключатель день/ночь */
+document.getElementById('sw').addEventListener('click', () => {
+  const s = root.dataset.sky === 'night' ? 'day' : 'night';
+  root.dataset.sky = s;
+  if (s === 'night') loadNight();
+  try { localStorage.setItem('astrum-sky', s); } catch (e) {}
+});
+
+/* онлайн сервера — после отрисовки страницы, в свободное время браузера */
+const online = () => fetch('https://api.mcsrvstat.us/3/' + IP)
   .then(r => r.json())
   .then(d => {
     const n = d && d.players ? d.players.online : null;
-    document.documentElement.dataset.live = n == null ? 'off' : 'on';
+    root.dataset.live = n == null ? 'off' : 'on';
     document.querySelectorAll('[data-online]').forEach(el => el.textContent = n == null ? '—' : n);
   })
-  .catch(() => {
-    document.documentElement.dataset.live = 'off';
-    document.querySelectorAll('[data-online]').forEach(el => el.textContent = '—');
-  });
+  .catch(() => { root.dataset.live = 'off'; });
+(window.requestIdleCallback || setTimeout)(online, 1500);

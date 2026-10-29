@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Редактор вики (вход по токену) — ASTRUM</title>
+</head>
+<body>
+  <!-- Sveltia CMS: тот же редактор и тот же config.yml, но вход по токену GitHub — OAuth-прокси не нужен -->
+  <script src="https://unpkg.com/@sveltia/cms@0.232.0/dist/sveltia-cms.js"></script>
+  <script>
+    /* вид предпросмотра в редакторе = вид вики */
+    try{ CMS.registerPreviewStyle('https://fonts.googleapis.com/css2?family=Unbounded:wght@700;900&family=Onest:wght@400;500;600&display=swap');
+    CMS.registerPreviewStyle(`
+      body{font-family:Onest,sans-serif;color:#252321;background:#f8f5ef;line-height:1.7;font-size:17px;padding:28px}
+      h1,h2,h3,h4{font-family:Unbounded,sans-serif;letter-spacing:-.025em}
+      h2{font-size:26px;margin:1.6em 0 .6em;padding-top:1em;border-top:1px solid #2523211a}
+      img{max-width:100%;border-radius:16px;border:1px solid #2523211a;display:block;margin:1em 0}
+      code{background:#f1ebe0;padding:.15em .45em;border-radius:6px}
+      blockquote{border-left:4px solid #f28b78;background:#fff;border-radius:14px;padding:14px 20px;margin:1em 0}
+      table{border-collapse:collapse;width:100%;font-size:15px}th,td{padding:10px 14px;border-bottom:1px solid #2523211a;text-align:left}
+      a{color:#252321;border-bottom:1.5px solid #f28b78;text-decoration:none}
+    `, { raw: true }); }catch(e){}
+  </script>
+</body>
+</html>

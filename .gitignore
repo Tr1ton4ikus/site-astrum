@@ -1,3 +1,10 @@
 .claude/
 node_modules/
 *.log
+# собирается скриптом wiki/build.mjs
+/sitemap.xml
+/robots.txt
+/wiki/index.html
+/wiki/search.json
+/wiki/*/index.html
+!/wiki/admin/index.html

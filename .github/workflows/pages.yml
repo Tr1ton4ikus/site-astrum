@@ -1,5 +1,5 @@
 # Публикует сайт на GitHub Pages при каждом изменении (в том числе когда статью сохраняют в редакторе вики).
-# Перед публикацией пересобирает список статей wiki/content/index.json.
+# Перед публикацией собирает вики в HTML-страницы, sitemap.xml и robots.txt.
 name: pages
 on:
   push:
@@ -23,7 +23,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: node wiki/build.mjs
+          cache: npm
+      - run: npm ci
+      - run: node wiki/build.mjs --stamp
+      - run: rm -rf node_modules wiki/_template.html wiki/build.mjs wiki/dev.mjs wiki/README.md package.json package-lock.json site.json wiki/admin/oauth-worker.js
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

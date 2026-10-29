@@ -5,7 +5,7 @@ backend:
   name: github
   repo: Tr1ton4ikus/site-astrum
   branch: main
-  # base_url: https://ВАШ-OAUTH-ПРОКСИ   # нужен, если сайт не на Netlify (см. wiki/README.md)
+  # base_url: https://ВАШ-WORKER.workers.dev   # адрес Cloudflare Worker из wiki/admin/oauth-worker.js — без него вход через GitHub на GitHub Pages не работает
 
 # для локальной работы: npx decap-server  (редактор пишет прямо в файлы на диске, без GitHub)
 local_backend: true
