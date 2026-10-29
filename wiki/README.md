@@ -1,46 +1,53 @@
 # Вики ASTRUM
 
-Статьи лежат в `wiki/content/*.md`. Писать их удобно в редакторе: `https://ваш-сайт/wiki/admin/` — это визуальная панель (Decap CMS) с кнопками форматирования, загрузкой картинок и предпросмотром. Код трогать не нужно.
+Статьи — это файлы `wiki/content/*.md`. Писать их удобно в редакторе **Decap CMS**: `/wiki/admin/`.
+При каждой публикации GitHub Actions собирает из статей обычные страницы (`/wiki/<статья>/`), `sitemap.xml` и `robots.txt`.
+
+## Редактор
+
+| | Адрес | Вход |
+|---|---|---|
+| Decap CMS | `https://tr1ton4ikus.github.io/site-astrum/wiki/admin/` | «Войти через GitHub» (нужен Worker, см. ниже) |
+| Запасной вход | `https://tr1ton4ikus.github.io/site-astrum/wiki/admin/token.html` | токен GitHub (работает сразу) |
+
+Данные: репозиторий `Tr1ton4ikus/site-astrum`, ветка `main`.
+
+### Запасной вход по токену (1 минута)
+GitHub → Settings → Developer settings → Personal access tokens → Fine-grained → Generate:
+доступ только к репозиторию `site-astrum`, право **Contents: Read and write**. Токен вставляется в редактор.
+
+### Вход в Decap через GitHub (один раз)
+Decap на GitHub Pages нужен небольшой посредник для OAuth — бесплатный Cloudflare Worker.
+1. GitHub → Settings → Developer settings → OAuth Apps → New: Homepage `https://tr1ton4ikus.github.io/site-astrum/`,
+   Callback URL `https://<имя-worker>.workers.dev/callback`. Запомните Client ID и создайте Client secret.
+2. Cloudflare → Workers → Create: вставьте код из `wiki/admin/oauth-worker.js`.
+   Variables: `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET` (secret), `ALLOWED_ORIGIN` = `https://tr1ton4ikus.github.io`.
+3. В `wiki/admin/config.yml` раскомментируйте `base_url` и впишите адрес Worker. Готово.
 
 ## Как писать статью
+Новая статья → адрес (латиницей), заголовок, раздел, порядок, обложка (по желанию), текст.
+В тексте: заголовки H2/H3 (попадают в оглавление), списки, таблицы, картинки, `код`.
+Врезка — строка с `>` в начале. Кнопка — `[Текст](ссылка){.btn}` или `{.btn .ghost}`.
+Ссылка на другую статью — `[текст](#/адрес)`.
 
-1. Откройте `/wiki/admin/`, нажмите **Новая статья**.
-2. Заполните: адрес страницы (латиницей), заголовок, раздел, порядок, обложка (по желанию), текст.
-3. Нажмите **Опубликовать** — страница появится в меню вики.
-
-В тексте работает обычное оформление: заголовки H2/H3 (попадают в оглавление справа), списки, таблицы, картинки, `код`.
-Особое:
-- Врезка: строка, начинающаяся с `>`.
-- Кнопка: `[Заполнить заявку](https://…){.btn}` или `{.btn .ghost}` для светлой.
-
-## Подключение (один раз)
-
-**Вариант A — локально, без GitHub** (чтобы попробовать):
-Нужен только Node.js. Из корня сайта (где лежит папка `wiki/`):
+## Локально
+Нужен Node.js. Из корня сайта:
 ```bash
+npm install
 node wiki/dev.mjs
 ```
-Откройте http://localhost:8080/wiki/admin/ — редактор сохраняет статьи прямо в `wiki/content/`, список в меню обновляется сам. Читать результат: http://localhost:8080/wiki/.
+Сайт — http://localhost:8080/, редактор — http://localhost:8080/wiki/admin/ (сохраняет прямо в файлы).
 
-**Ваш случай — сайт на GitHub Pages (репозиторий Tr1ton4ikus/site-astrum), редактор — Sveltia CMS:**
-1. Откройте https://tr1ton4ikus.github.io/site-astrum/wiki/admin/ и нажмите **«Войти с помощью токена доступа»**.
-2. Токен создаётся один раз: GitHub → Settings → Developer settings → Personal access tokens → Fine-grained → доступ только к репозиторию site-astrum, права **Contents: Read and write**. Вставьте его в редактор.
-3. Пишите статьи. Каждая публикация — коммит в репозиторий; сайт обновится сам за 1–2 минуты (за это отвечает .github/workflows/pages.yml).
-4. Вернуться на классический Decap CMS можно, поменяв script в wiki/admin/index.html (для входа тогда нужен OAuth-прокси).
-
-**Вариант B — общий порядок (любой хостинг на GitHub):**
-1. Положите сайт в репозиторий GitHub, в `wiki/admin/config.yml` замените `OWNER/REPO` на свой.
-2. Если сайт на **Netlify** — включите Identity + Git Gateway и поменяйте `backend.name` на `git-gateway`.
-   Если хостинг другой — нужен OAuth-прокси для GitHub (например `sveltia-cms-auth` или `decap-proxy` на Cloudflare Workers); адрес укажите в `base_url`.
-3. Действие `.github/workflows/wiki-index.yml` само пересобирает список статей после каждой публикации.
+## Свой домен
+Впишите его в `site.json` (`"url"`) — canonical, sitemap и Open Graph обновятся при следующей публикации.
+Домен подключается в GitHub: Settings → Pages → Custom domain.
 
 ## Структура
-
 ```
-wiki/
-  index.html        читалка вики (меню, поиск, оглавление, день/ночь)
-  content/*.md      статьи (перенесены со старой вики)
-  content/index.json  список статей — собирает build.mjs
-  admin/            редактор (index.html + config.yml)
-  build.mjs         сборка списка статей
+index.html, map/        главная и карта
+wiki/_template.html     шаблон страницы вики
+wiki/content/*.md       статьи
+wiki/build.mjs          сборка (страницы, поиск, sitemap, robots)
+wiki/admin/             редактор (Decap, token.html, config.yml, oauth-worker.js)
+site.json               адрес сайта
 ```
