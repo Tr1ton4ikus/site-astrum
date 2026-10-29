@@ -7,8 +7,7 @@
 <meta name="description" content="ASTRUM — приватный ванильный полу-РП Minecraft-сервер без приватов. Города, свобода и живой мир. Java Edition, лицензия не нужна. IP: astrums.pro">
 <meta name="keywords" content="Minecraft, майнкрафт, сервер, ванильный, Astrum, РП, полу-РП, приватный сервер, без привата, Java Edition, карта, вики, Discord">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
-<meta name="theme-color" content="#0f0a1a">
-<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#fff8f0">
 <link rel="canonical" href="__SITE__/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="ASTRUM">
@@ -19,7 +18,7 @@
 <meta property="og:image" content="__SITE__/assets/og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Закат над миром ASTRUM">
+<meta property="og:image:alt" content="Вишнёвая роща в мире ASTRUM">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="ASTRUM | Ванильный Minecraft Java-сервер">
 <meta name="twitter:description" content="Создай свою историю. Полу-РП, города и свобода без приватов. IP: astrums.pro">
@@ -28,129 +27,160 @@
 <link rel="icon" href="assets/logo.webp" type="image/webp">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"__SITE__/#site","url":"__SITE__/","name":"ASTRUM","inLanguage":"ru-RU","description":"Ванильный полу-РП Minecraft-сервер"},{"@type":"Organization","@id":"__SITE__/#org","name":"ASTRUM","url":"__SITE__/","logo":"__SITE__/assets/logo.webp","sameAs":["https://discord.gg/7jnWGDB2fP","https://t.me/ast_mc","https://www.youtube.com/@Astrum_mc"]}]}</script>
-<link rel="preload" as="image" href="assets/cave.webp" fetchpriority="high">
+<script>
+/* тема по сохранённому выбору или по времени суток; сразу подгружаем нужную картинку героя */
+(function(){var s=null;try{s=localStorage.getItem('astrum-sky')}catch(e){}
+if(!s){var h=new Date().getHours();s=(h>=7&&h<19)?'day':'night'}
+document.documentElement.dataset.sky=s;
+var l=document.createElement('link');l.rel='preload';l.as='image';l.href='assets/hero-'+s+'.webp';l.setAttribute('fetchpriority','high');document.head.appendChild(l)})();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@600;700&family=Onest:wght@400;600&display=swap" media="print" onload="this.media='all'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@600;700&family=Onest:wght@400;600&display=swap"></noscript>
-<script>
-(function(){var s=null;try{s=localStorage.getItem('astrum-sky')}catch(e){}
-if(!s){var h=new Date().getHours();s='night'}
-document.documentElement.dataset.sky=s})();
-</script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@700;900&family=Onest:wght@400;600&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@700;900&family=Onest:wght@400;600&display=swap"></noscript>
 <style>
-:root{--paper:#f5f0ff;--tile:#ebe3fb;--ink:#1a1033;--muted:#6a5d88;--rule:#1a103329;--accent:#7e22ce;--btn:#7e22ce;--hot:#c026d3}
-html[data-sky=night]{--paper:#0f0a1a;--tile:#1a1230;--ink:#f3eefc;--muted:#a79bc4;--rule:#f3eefc26;--accent:#a855f7;--btn:#9333ea;--hot:#f472d0}
+:root{--bg:#fff8f0;--surface:#fff;--ink:#1d2333;--muted:#666b7a;--line:#1d23331a;--coral:#ff6a45;--coral-d:#e9502b;--gold:#ffb829;--rose:#ff7ca8;--sky:#3aa8f5;--leaf:#3fae55;--shadow:0 18px 50px -18px rgba(60,36,20,.28)}
+html[data-sky=night]{--bg:#111628;--surface:#1a2038;--ink:#f3f1ec;--muted:#a3a8b8;--line:#ffffff1c;--coral:#ff7a57;--coral-d:#ff8e6e;--gold:#ffc54d;--shadow:0 18px 50px -18px rgba(0,0,0,.6)}
 *{box-sizing:border-box;margin:0}
 html{scroll-behavior:smooth;overflow-x:clip}
-body{font-family:Onest,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);background:var(--paper);line-height:1.6;font-size:17px}
-h1,h2,h3,.brand,.big{font-family:Oswald,Impact,"Arial Narrow",sans-serif;text-transform:uppercase;font-weight:700;letter-spacing:.01em;line-height:.95}
+body{font-family:Onest,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);background:var(--bg);line-height:1.6;font-size:17px}
+h1,h2,h3,.brand{font-family:Rubik,system-ui,sans-serif;font-weight:900;letter-spacing:-.02em;line-height:1.02}
 a{color:inherit;text-decoration:none}
 .wrap{width:min(1180px,100% - 48px);margin-inline:auto}
-.logo{width:28px;height:28px;display:block}
+#fx{position:fixed;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
+main,footer{position:relative;z-index:2}
 
-nav{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--paper) 78%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--rule)}
-#bg{position:fixed;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none}
-.rv{opacity:0;transform:translateY(16px);transition:opacity .6s,transform .6s cubic-bezier(.16,1,.3,1)}.rv.in{opacity:1;transform:none}
-nav .wrap{display:flex;align-items:center;gap:30px;height:68px}
-.brand{font-size:24px;letter-spacing:.14em;display:flex;align-items:center;gap:12px}
-nav ul{display:flex;gap:26px;list-style:none;padding:0;margin-left:auto}
-nav ul a{font-size:14px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:6px 0;border-bottom:2px solid transparent}
-nav ul a:hover{border-color:var(--accent)}
-.sw{width:38px;height:38px;border:1px solid var(--ink);border-radius:4px;background:none;cursor:pointer;display:grid;place-items:center;color:var(--ink)}
-.sw svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+/* шапка: прозрачная над картинкой, плотная при прокрутке */
+.top{position:fixed;inset:0 0 auto 0;z-index:50;color:#fff;transition:background .3s,color .3s,box-shadow .3s}
+.top.solid{background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(12px);color:var(--ink);box-shadow:0 1px 0 var(--line)}
+.top .wrap{display:flex;align-items:center;gap:26px;height:74px}
+.brand{font-size:21px;letter-spacing:.08em;display:flex;align-items:center;gap:11px}
+.logo{width:32px;height:32px;display:block;filter:drop-shadow(0 4px 10px rgba(0,0,0,.25))}
+.top ul{display:flex;gap:4px;list-style:none;padding:0;margin-left:auto}
+.top ul a{display:block;padding:8px 15px;border-radius:10px;font-weight:600;font-size:15px;opacity:.9;transition:background .2s,opacity .2s}
+.top ul a:hover{opacity:1;background:rgba(255,255,255,.16)}
+.top.solid ul a:hover{background:var(--line)}
+.sw{width:40px;height:40px;border-radius:12px;border:1.5px solid currentColor;background:none;cursor:pointer;display:grid;place-items:center;color:inherit;opacity:.9}
+.sw svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .sw .moon{display:none}html[data-sky=night] .sw .moon{display:block}html[data-sky=night] .sw .sun{display:none}
-.btn{display:inline-flex;align-items:center;height:52px;padding:0 28px;border-radius:4px;font-weight:600;font-size:15px;letter-spacing:.06em;text-transform:uppercase;border:2px solid var(--ink);cursor:pointer;font-family:inherit;background:none;color:var(--ink)}
-.btn:hover{background:var(--ink);color:var(--paper)}
-.btn-main{background:var(--btn);border-color:var(--btn);color:#fff}
-.btn-main:hover{background:var(--ink);border-color:var(--ink);color:var(--paper)}
-.btn-sm{height:40px;padding:0 18px;font-size:13px}
-.burger{display:none;width:38px;height:38px;border:1px solid var(--ink);border-radius:4px;background:none;cursor:pointer;position:relative}
-.burger::before,.burger::after{content:"";position:absolute;left:9px;right:9px;height:2px;background:var(--ink);top:12px;box-shadow:0 7px 0 var(--ink)}
-.burger::after{box-shadow:none;top:26px}
+.burger{display:none;width:40px;height:40px;border-radius:12px;border:1.5px solid currentColor;background:none;cursor:pointer;position:relative;color:inherit}
+.burger::before,.burger::after{content:"";position:absolute;left:10px;right:10px;height:2px;background:currentColor;top:13px;box-shadow:0 6px 0 currentColor}
+.burger::after{box-shadow:none;top:25px}
+.btn{display:inline-flex;align-items:center;gap:10px;height:54px;padding:0 28px;border-radius:14px;font-weight:600;font-size:16px;border:0;cursor:pointer;font-family:inherit;transition:transform .18s,background .2s,box-shadow .2s}
+.btn:hover{transform:translateY(-2px)}.btn:active{transform:translateY(0) scale(.98)}
+.btn-main{background:var(--coral);color:#fff;box-shadow:0 10px 0 -4px var(--coral-d),0 18px 30px -12px rgba(255,106,69,.7)}
+.btn-main:hover{background:#ff7d5c}
+.btn-light{background:rgba(255,255,255,.16);color:#fff;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.6);backdrop-filter:blur(6px)}
+.btn-light:hover{background:rgba(255,255,255,.26)}
+.btn-sm{height:42px;padding:0 18px;font-size:15px;box-shadow:none}
 
-.hero{padding:64px 0 90px}
-.hero .wrap{display:grid;grid-template-columns:7fr 5fr;gap:56px;align-items:end}
-h1{font-size:clamp(64px,11vw,168px);margin-bottom:34px}
-h1 span{color:var(--hot);display:block}
-.sub{font-size:20px;color:var(--muted);max-width:430px}
+/* герой */
+.hero{position:relative;min-height:min(100svh,920px);display:grid;align-items:center;color:#fff;isolation:isolate;padding:120px 0 140px}
+.hbg{position:absolute;inset:0;z-index:-1;overflow:hidden}
+.hbg i{position:absolute;inset:0;background-size:cover;background-position:center 40%;animation:drift 30s ease-in-out infinite alternate}
+.hbg .d{background-image:url(assets/hero-day.webp)}
+.hbg .n{background-image:url(assets/hero-night.webp);display:none}
+html[data-sky=night] .hbg .d{display:none}html[data-sky=night] .hbg .n{display:block}
+@keyframes drift{to{transform:scale(1.06) translate(-1%,-1%)}}
+.hbg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(18,14,30,.62) 0%,rgba(18,14,30,.28) 48%,rgba(18,14,30,0) 72%),linear-gradient(180deg,rgba(18,14,30,.35) 0%,transparent 22%,transparent 62%,var(--bg) 100%)}
+.status{display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border-radius:999px;background:rgba(255,255,255,.16);backdrop-filter:blur(8px);font-weight:600;font-size:14.5px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.3)}
+.status i{width:9px;height:9px;border-radius:50%;background:#4ade80;animation:ping 2s infinite}
+.status.off i{background:#ff6b6b;animation:none}
+@keyframes ping{0%{box-shadow:0 0 0 0 rgba(74,222,128,.7)}70%,100%{box-shadow:0 0 0 9px rgba(74,222,128,0)}}
+.hero h1{font-size:clamp(54px,8.6vw,124px);margin:26px 0 22px;max-width:9.5em;text-shadow:0 6px 30px rgba(0,0,0,.25)}
+.hero h1 span{color:#ffd166;position:relative;white-space:nowrap}
+.hero h1 span::after{content:"";position:absolute;left:2%;right:2%;bottom:.04em;height:.12em;background:var(--coral);border-radius:4px;z-index:-1;transform:skewX(-12deg)}
+.lead{font-size:clamp(18px,1.6vw,21px);max-width:500px;opacity:.94;text-shadow:0 2px 16px rgba(0,0,0,.35)}
 .cta{display:flex;gap:14px;flex-wrap:wrap;margin-top:34px}
-.ip{display:inline-flex;margin-top:30px;border:1px solid var(--ink);border-radius:4px;cursor:pointer;background:none;color:inherit;font-family:inherit;font-size:16px;align-items:stretch;padding:0}
-.ip b{font-family:Oswald,sans-serif;font-size:22px;letter-spacing:.06em;padding:10px 20px;font-weight:600}
-.ip span{background:var(--btn);color:#fff;padding:0 16px;display:grid;place-items:center;font-size:12.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
-.ip:hover span{background:var(--hot);color:#1a1033}
-figure.plate{background:var(--tile);padding:10px;border:1px solid var(--rule);box-shadow:8px 8px 0 var(--btn)}
-.pic{position:relative;aspect-ratio:4/5;overflow:hidden;background:#2a1d4a}
-.pic img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .5s}
-.pic img.night{opacity:0}html[data-sky=night] .pic img.night{opacity:1}html[data-sky=night] .pic img.day{opacity:0}
-figcaption{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:12px 4px 4px;font-size:13.5px;color:var(--muted)}
-.status{display:flex;align-items:center;gap:9px;color:var(--ink);font-weight:600}
-.status i{width:9px;height:9px;border-radius:50%;background:#3ddc84;display:block;box-shadow:0 0 0 0 #3ddc8488;animation:ping 2s infinite}
-@keyframes ping{70%{box-shadow:0 0 0 8px #3ddc8400}100%{box-shadow:0 0 0 0 #3ddc8400}}
-.status.off i{background:#ff5a5a;animation:none}
+.ip{display:inline-flex;align-items:center;gap:14px;margin-top:22px;padding:6px 6px 6px 18px;border-radius:14px;background:rgba(0,0,0,.28);backdrop-filter:blur(8px);border:0;color:#fff;cursor:pointer;font-family:inherit;font-size:15px}
+.ip b{font-family:Rubik,sans-serif;font-weight:700;font-size:18px;letter-spacing:.02em}
+.ip span{background:#fff;color:#1d2333;padding:8px 14px;border-radius:10px;font-size:13.5px;font-weight:600;transition:background .2s}
+.ip:hover span{background:#ffd166}
 
-section{padding:96px 0}
-.label{display:flex;gap:14px;align-items:center;font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:30px}
-.label::after{content:"";flex:1;height:1px;background:var(--rule)}
-.label b{color:var(--accent);font-weight:600}
-.pr{display:grid;grid-template-columns:repeat(4,1fr);gap:0}
-.p{padding:6px 28px 6px 0}.p+.p{padding-left:28px;border-left:1px solid var(--rule)}
-.p h3{font-size:30px;margin-bottom:12px}.p p{color:var(--muted);max-width:230px}
-.rows a{display:grid;grid-template-columns:70px 1fr 220px 40px;gap:28px;align-items:center;padding:26px 0;border-top:1px solid var(--rule)}
-.rows a:last-child{border-bottom:1px solid var(--rule)}
-.rows .n{font-family:Oswald,sans-serif;font-size:18px;color:var(--accent);font-weight:600}
-.rows h3{font-size:clamp(44px,6.4vw,92px);transition:color .2s}
-.rows p{color:var(--muted);grid-column:2;margin-top:4px}
-.rows .th{grid-column:3;grid-row:1/3;height:110px;overflow:hidden;background:var(--tile)}
-.rows .th img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.05);transition:filter .3s}
-.rows .ar{font-family:Oswald,sans-serif;font-size:34px;color:var(--ink);grid-column:4;grid-row:1/3;transition:transform .2s,color .2s}
-.rows a:hover h3,.rows a:hover .ar{color:var(--hot)}.rows a:hover .th img{filter:none}.rows a:hover .ar{transform:translateX(6px)}
-.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:0}
-.step{padding:0 34px 0 0}.step+.step{padding-left:34px;border-left:1px solid var(--rule)}
-.step .big{font-size:90px;color:var(--accent);display:block;margin-bottom:14px}
-.step h3{font-size:30px;margin-bottom:10px}.step p{color:var(--muted)}
-.faq{display:grid;grid-template-columns:4fr 8fr;gap:70px;align-items:start}
-.faq h2{font-size:clamp(48px,6vw,84px);position:sticky;top:110px}
-details{border-top:1px solid var(--rule);padding:20px 0}details:last-child{border-bottom:1px solid var(--rule)}
-summary{cursor:pointer;font-weight:600;font-size:19px;list-style:none;display:flex;justify-content:space-between;gap:24px}
-summary::after{content:"+";font-family:Oswald,sans-serif;font-size:30px;line-height:.8;color:var(--accent)}
-details[open] summary::after{content:"–"}
+section{padding:100px 0}
+.kicker{font-weight:600;font-size:14px;color:var(--coral);letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px}
+h2{font-size:clamp(34px,4.4vw,58px)}
+.head{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;margin-bottom:40px}
+.head p{color:var(--muted);max-width:420px}
+
+/* принципы */
+.pr{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:-70px;position:relative}
+.p{background:var(--surface);border-radius:22px;padding:28px 26px;box-shadow:var(--shadow);border:1px solid var(--line)}
+.p svg{width:46px;height:46px;margin-bottom:18px;display:block}
+.p h3{font-size:22px;margin-bottom:8px;font-weight:700}.p p{color:var(--muted);font-size:15.5px}
+
+/* разделы */
+.cards{display:grid;grid-template-columns:1.25fr 1fr 1fr;gap:18px}
+.card{position:relative;min-height:440px;border-radius:26px;overflow:hidden;color:#fff;display:flex;flex-direction:column;justify-content:flex-end;padding:30px;isolation:isolate;box-shadow:var(--shadow);transition:transform .35s}
+.card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;transition:transform .9s}
+.card::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,transparent 40%,rgba(14,12,24,.78))}
+.card:hover{transform:translateY(-6px)}.card:hover img{transform:scale(1.06)}
+.card .tag{position:absolute;top:22px;left:22px;padding:6px 12px;border-radius:999px;font-size:13px;font-weight:600;background:rgba(255,255,255,.9);color:#1d2333}
+.card h3{font-size:clamp(32px,3vw,42px)}
+.card p{opacity:.9;margin-top:6px}
+.card .go{position:absolute;right:22px;bottom:26px;width:46px;height:46px;border-radius:14px;background:var(--coral);display:grid;place-items:center;font-size:22px;transition:transform .25s}
+.card:hover .go{transform:translateX(4px) rotate(-8deg)}
+
+/* как зайти */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;counter-reset:s}
+.step{position:relative;padding:30px 26px 28px;border-radius:22px;background:var(--surface);border:1px solid var(--line)}
+.step .n{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;font-family:Rubik,sans-serif;font-weight:900;font-size:24px;color:#fff;margin-bottom:20px}
+.step:nth-child(1) .n{background:var(--coral);box-shadow:0 6px 0 var(--coral-d)}
+.step:nth-child(2) .n{background:var(--gold);box-shadow:0 6px 0 #e49b06}
+.step:nth-child(3) .n{background:var(--leaf);box-shadow:0 6px 0 #2e8a40}
+.step h3{font-size:24px;margin-bottom:8px;font-weight:700}.step p{color:var(--muted)}
+
+/* вопросы */
+.faq{display:grid;grid-template-columns:4fr 7fr;gap:60px;align-items:start}
+.faq .side{position:sticky;top:110px}
+.faq .side p{color:var(--muted);margin:14px 0 22px}
+.qs{background:var(--surface);border-radius:22px;border:1px solid var(--line);padding:6px 26px}
+details{border-bottom:1px solid var(--line);padding:20px 0}details:last-child{border:0}
+summary{cursor:pointer;font-weight:600;font-size:18px;list-style:none;display:flex;justify-content:space-between;gap:20px;align-items:center}
+summary::after{content:"+";flex:none;width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:var(--bg);color:var(--coral);font-size:20px;transition:transform .3s}
+details[open] summary::after{transform:rotate(45deg)}
 details p{color:var(--muted);margin-top:10px}
-.disc{background:var(--btn);color:#fff;padding:72px 56px;margin-bottom:96px;display:flex;justify-content:space-between;gap:32px;align-items:center;flex-wrap:wrap}
-.disc h2{font-size:clamp(44px,6vw,86px);max-width:640px}
-.disc p{margin-top:16px;max-width:420px;opacity:.92}
-.disc .btn{background:var(--ink);border-color:var(--ink);color:#fff}
-.disc .btn:hover{background:#fff;color:var(--ink);border-color:#fff}
-footer{border-top:1px solid var(--rule);padding:34px 0;color:var(--muted);font-size:14.5px}
-footer .wrap{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap}
-footer ul{display:flex;gap:24px;list-style:none;padding:0}footer a:hover{color:var(--accent)}
-.toast{position:fixed;bottom:24px;left:50%;transform:translate(-50%,90px);background:var(--ink);color:var(--paper);padding:12px 22px;border-radius:4px;font-weight:600;font-size:14.5px;transition:transform .3s;z-index:130}
+.btn-line{background:none;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink)}
+.btn-line:hover{background:var(--ink);color:var(--bg)}
+
+/* discord */
+.band{position:relative;border-radius:30px;overflow:hidden;color:#fff;padding:84px 60px;margin-bottom:100px;isolation:isolate;box-shadow:var(--shadow)}
+.band img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
+.band::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(20,16,36,.86) 30%,rgba(20,16,36,.25))}
+.band h2{max-width:560px}.band p{max-width:440px;margin:16px 0 30px;opacity:.9}
+.btn-discord{background:#5865f2;color:#fff;box-shadow:0 10px 0 -4px #3c45c9}
+.btn-discord:hover{background:#6a76ff}
+.btn-discord svg{width:22px;height:22px;fill:#fff}
+
+footer{border-top:1px solid var(--line);padding:36px 0;color:var(--muted);font-size:14.5px;background:var(--bg)}
+footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center}
+footer .brand{color:var(--ink);font-size:17px}
+footer ul{display:flex;gap:22px;list-style:none;padding:0}footer a:hover{color:var(--coral)}
+.toast{position:fixed;bottom:24px;left:50%;transform:translate(-50%,90px);background:var(--ink);color:var(--bg);padding:12px 22px;border-radius:12px;font-weight:600;font-size:14.5px;transition:transform .3s;z-index:130}
 .toast.show{transform:translate(-50%,0)}
-.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.rv{opacity:0;transform:translateY(18px);transition:opacity .6s,transform .6s cubic-bezier(.16,1,.3,1)}.rv.in{opacity:1;transform:none}
 
 @media(max-width:1020px){
-  nav ul{position:absolute;top:68px;left:0;right:0;flex-direction:column;gap:0;background:var(--paper);padding:8px 24px 16px;border-bottom:1px solid var(--rule);display:none;margin:0}
-  nav ul a{display:block;padding:14px 0;border:0;border-top:1px solid var(--rule)}
-  .menu-open nav ul{display:flex}.burger{display:block}nav .sw{margin-left:auto}
-  .hero .wrap,.faq{grid-template-columns:1fr;gap:44px}.faq h2{position:static}figure.plate{max-width:480px}
-  .pr{grid-template-columns:1fr 1fr;row-gap:34px}.p:nth-child(odd){padding-left:0;border-left:0}
-  .rows a{grid-template-columns:44px 1fr 28px;gap:16px}.rows .th{display:none}.rows .ar{grid-column:3}
-  .steps{grid-template-columns:1fr;row-gap:36px}.step,.step+.step{padding:0;border:0}
-  section{padding:68px 0}.disc{padding:48px 26px}
+  .top ul{position:absolute;top:74px;left:12px;right:12px;flex-direction:column;background:var(--surface);color:var(--ink);padding:10px;border-radius:16px;box-shadow:var(--shadow);display:none;margin:0}
+  .menu-open .top ul{display:flex}.burger{display:block}.top .sw{margin-left:auto}
+  .pr{grid-template-columns:1fr 1fr}
+  .cards{grid-template-columns:1fr}.card{min-height:300px}
+  .steps,.faq{grid-template-columns:1fr}.faq{gap:30px}.faq .side{position:static}
+  section{padding:76px 0}.band{padding:56px 28px}
 }
-@media(max-width:620px){.pr{grid-template-columns:1fr}.p,.p+.p{border:0;padding:0}.nav-btn{display:none}.hero{padding-top:36px}}
+@media(max-width:620px){.pr{grid-template-columns:1fr;margin-top:-50px}.nav-btn{display:none}.hero{padding:110px 0 120px}.ip{width:100%;justify-content:space-between}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}.rv{opacity:1;transform:none}}
 </style>
 </head>
 <body>
-<canvas id="bg" aria-hidden="true"></canvas>
+<canvas id="fx" aria-hidden="true"></canvas>
 
-<nav id="nav"><div class="wrap">
-  <a href="./" class="brand" aria-label="ASTRUM — главная"><img class="logo" src="assets/logo.webp" width="28" height="28" alt="">ASTRUM</a>
+<header class="top" id="nav"><div class="wrap">
+  <a href="./" class="brand" aria-label="ASTRUM — главная"><img class="logo" src="assets/logo.webp" width="32" height="32" alt="">ASTRUM</a>
   <ul>
     <li><a href="map/">Карта</a></li>
     <li><a href="wiki/">Вики</a></li>
-    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#faq">Вопросы</a></li>
     <li><a href="https://shop.astrums.pro">Магазин</a></li>
   </ul>
   <button class="sw" id="sw" aria-label="Переключить день и ночь" title="День / ночь">
@@ -159,93 +189,91 @@ footer ul{display:flex;gap:24px;list-style:none;padding:0}footer a:hover{color:v
   </button>
   <a class="btn btn-main btn-sm nav-btn" href="wiki/how-play/">Начать игру</a>
   <button class="burger" aria-label="Меню"></button>
-</div></nav>
+</div></header>
 
 <main>
-<header class="hero">
+<section class="hero">
+  <div class="hbg" aria-hidden="true"><i class="d"></i><i class="n"></i></div>
   <div class="wrap">
-    <div>
-      <h1>Создай свою <span>историю</span></h1>
-      <p class="sub">Приватный ванильный сервер Minecraft с городами, парламентом и свободой без приватов.</p>
-      <div class="cta">
-        <a class="btn btn-main" href="wiki/how-play/">Начать игру</a>
-        <a class="btn" href="#about">Узнать больше</a>
-      </div>
-      <button class="ip" data-ip aria-label="Скопировать IP astrums.pro"><b>astrums.pro</b><span>Копировать</span></button>
+    <span class="status" id="status"><i></i><span>Сервер онлайн</span><span id="count"></span></span>
+    <h1>Создай свою <span>историю</span></h1>
+    <p class="lead">Ванильный Minecraft с городами, парламентом и свободой — без приватов и лишних команд.</p>
+    <div class="cta">
+      <a class="btn btn-main" href="wiki/how-play/">Начать игру →</a>
+      <a class="btn btn-light" href="map/">Открыть карту</a>
     </div>
-    <figure class="plate">
-      <div class="pic">
-        <img class="day" data-src="assets/sunset.webp" width="1280" height="720" decoding="async" alt="Закат над миром ASTRUM">
-        <img class="night" src="assets/cave.webp" width="1400" height="788" fetchpriority="high" decoding="async" alt="Ночной мир ASTRUM">
-      </div>
-      <figcaption><span class="status" id="status"><i></i><span>Сервер онлайн</span><span id="count"></span></span><span>Java Edition</span></figcaption>
-    </figure>
+    <button class="ip" data-ip aria-label="Скопировать IP astrums.pro">IP <b>astrums.pro</b><span>Копировать</span></button>
   </div>
-</header>
+</section>
 
-<section id="about" style="padding-top:20px">
+<section id="about" style="padding-top:0">
+  <div class="wrap pr">
+    <div class="p">
+      <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 4 42 14 24 24 6 14z" fill="#5fc25a"/><path d="M6 14 24 24v20L6 34z" fill="#9b6b43"/><path d="M42 14 24 24v20l18-10z" fill="#7a5233"/><path d="M6 14 24 24 42 14v5L24 29 6 19z" fill="#4aa548"/></svg>
+      <h3>Свобода</h3><p>Играй по-своему, оставляя место другим.</p></div>
+    <div class="p">
+      <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 4 42 14 24 24 6 14z" fill="#ffc0d8"/><path d="M6 14 24 24v20L6 34z" fill="#ff8fbc"/><path d="M42 14 24 24v20l18-10z" fill="#ef6fa4"/></svg>
+      <h3>Сообщество</h3><p>Мир создают те, кто в нём живёт.</p></div>
+    <div class="p">
+      <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 4 42 14 24 24 6 14z" fill="#ffe08a"/><path d="M6 14 24 24v20L6 34z" fill="#ffc22e"/><path d="M42 14 24 24v20l18-10z" fill="#e8a40f"/></svg>
+      <h3>Порядок</h3><p>Без приватов. С доверием и ответственностью.</p></div>
+    <div class="p">
+      <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 4 42 14 24 24 6 14z" fill="#a8f0ff"/><path d="M6 14 24 24v20L6 34z" fill="#5fd5ec"/><path d="M42 14 24 24v20l18-10z" fill="#33b4cf"/></svg>
+      <h3>Истории</h3><p>РП — твой выбор, не обязанность.</p></div>
+  </div>
+</section>
+
+<section>
   <div class="wrap">
-    <div class="label"><b>01</b> Принципы</div>
-    <div class="pr">
-      <div class="p"><h3>Свобода</h3><p>Играй по-своему, оставляя место другим.</p></div>
-      <div class="p"><h3>Сообщество</h3><p>Мир создают те, кто в нём живёт.</p></div>
-      <div class="p"><h3>Порядок</h3><p>Без приватов. С доверием и ответственностью.</p></div>
-      <div class="p"><h3>Истории</h3><p>РП — твой выбор, не обязанность.</p></div>
+    <div class="head"><div><p class="kicker">Мир ASTRUM</p><h2>Всё под рукой</h2></div><p>Карта мира в реальном времени, вики с механиками и магазин проходок.</p></div>
+    <div class="cards">
+      <a class="card" href="map/"><img src="assets/meadow.webp" width="1140" height="760" loading="lazy" decoding="async" alt=""><span class="tag">Живая</span><h3>Карта</h3><p>Увидь мир с высоты.</p><span class="go" aria-hidden="true">→</span></a>
+      <a class="card" href="wiki/"><img src="assets/copper.webp" width="1170" height="500" loading="lazy" decoding="async" alt=""><span class="tag">Гайды</span><h3>Вики</h3><p>Всё важное — в одном месте.</p><span class="go" aria-hidden="true">→</span></a>
+      <a class="card" href="https://shop.astrums.pro"><img src="assets/rainbow.webp" width="900" height="384" loading="lazy" decoding="async" alt=""><span class="tag">Проходки</span><h3>Магазин</h3><p>Поддержи развитие ASTRUM.</p><span class="go" aria-hidden="true">→</span></a>
     </div>
   </div>
 </section>
 
 <section style="padding-top:20px">
   <div class="wrap">
-    <div class="label"><b>02</b> Разделы</div>
-    <div class="rows">
-      <a href="map/"><span class="n">A</span><h3>Карта</h3><p>Увидь мир с высоты.</p><span class="th"><img src="assets/cherry.webp" width="900" height="508" loading="lazy" decoding="async" alt=""></span><span class="ar">→</span></a>
-      <a href="wiki/"><span class="n">B</span><h3>Вики</h3><p>Всё важное — в одном месте.</p><span class="th"><img src="assets/cave.webp" width="1400" height="788" loading="lazy" decoding="async" alt=""></span><span class="ar">→</span></a>
-      <a href="https://shop.astrums.pro"><span class="n">C</span><h3>Магазин</h3><p>Поддержи развитие ASTRUM.</p><span class="th"><img src="assets/rainbow.webp" width="900" height="384" loading="lazy" decoding="async" alt=""></span><span class="ar">→</span></a>
-    </div>
-  </div>
-</section>
-
-<section style="padding-top:20px">
-  <div class="wrap">
-    <div class="label"><b>03</b> Как зайти</div>
+    <div class="head"><div><p class="kicker">Старт</p><h2>Как зайти</h2></div><p>Три шага — и ты в игре.</p></div>
     <div class="steps">
-      <div class="step"><span class="big">1</span><h3>Выбери путь</h3><p>Подай заявку или получи проходку.</p></div>
-      <div class="step"><span class="big">2</span><h3>Войди в Discord</h3><p>Discord обязателен для каждого игрока.</p></div>
-      <div class="step"><span class="big">3</span><h3>Подключись</h3><p>Java Edition. Адрес: astrums.pro.</p></div>
+      <div class="step"><span class="n">1</span><h3>Выбери путь</h3><p>Подай заявку или получи проходку.</p></div>
+      <div class="step"><span class="n">2</span><h3>Войди в Discord</h3><p>Discord обязателен для каждого игрока.</p></div>
+      <div class="step"><span class="n">3</span><h3>Подключись</h3><p>Java Edition. Адрес: astrums.pro.</p></div>
     </div>
   </div>
 </section>
 
 <section id="faq" style="padding-top:20px">
-  <div class="wrap">
-    <div class="label"><b>04</b> FAQ</div>
-    <div class="faq">
-      <h2>Вопросы</h2>
-      <div>
-        <details open><summary>Нужна ли лицензия Minecraft?</summary><p>Нет, лицензия не требуется.</p></details>
-        <details><summary>Как попасть на сервер?</summary><p>Подай заявку или получи проходку. Вступление в Discord обязательно.</p></details>
-        <details><summary>Какие версии поддерживаются?</summary><p>Java Edition, версии 1.21–26.2.</p></details>
-        <details><summary>Есть ли приваты и телепорты?</summary><p>Нет приватов и команды /spawn.</p></details>
-        <details><summary>РП обязательно?</summary><p>Нет. Города, парламент и ФБР — по желанию.</p></details>
-      </div>
+  <div class="wrap faq">
+    <div class="side"><p class="kicker">FAQ</p><h2>Вопросы</h2><p>Не нашёл ответ? Спроси в Discord — там всегда помогут.</p><a class="btn btn-line btn-sm" href="wiki/">Открыть вики</a></div>
+    <div class="qs">
+      <details open><summary>Нужна ли лицензия Minecraft?</summary><p>Нет, лицензия не требуется.</p></details>
+      <details><summary>Как попасть на сервер?</summary><p>Подай заявку или получи проходку. Вступление в Discord обязательно.</p></details>
+      <details><summary>Какие версии поддерживаются?</summary><p>Java Edition, версии 1.21–26.2.</p></details>
+      <details><summary>Есть ли приваты и телепорты?</summary><p>Нет приватов и команды /spawn.</p></details>
+      <details><summary>РП обязательно?</summary><p>Нет. Города, парламент и ФБР — по желанию.</p></details>
     </div>
   </div>
 </section>
 
-<div class="wrap"><div class="disc">
-  <div><h2>Твой следующий горизонт</h2><p>Общайся, узнавай новости и становись частью ASTRUM.</p></div>
-  <a class="btn" href="https://discord.gg/7jnWGDB2fP" rel="noopener">Войти в Discord</a>
+<div class="wrap"><div class="band">
+  <img src="assets/party.webp" width="1600" height="900" loading="lazy" decoding="async" alt="">
+  <h2>Твой следующий горизонт</h2>
+  <p>Общайся, узнавай новости и становись частью ASTRUM.</p>
+  <a class="btn btn-discord" href="https://discord.gg/7jnWGDB2fP" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.3 4.4A19.8 19.8 0 0 0 15.4 3l-.6 1.3a18.4 18.4 0 0 0-5.6 0L8.6 3a19.7 19.7 0 0 0-4.9 1.4C.6 9 .1 13.5.3 17.9a19.9 19.9 0 0 0 6 3l1.3-2a12.9 12.9 0 0 1-2-1l.5-.4a14.2 14.2 0 0 0 12 0l.5.4c-.6.4-1.3.7-2 1l1.3 2a19.8 19.8 0 0 0 6-3c.4-5-.7-9.5-3.4-13.5zM8.5 15.3c-1.2 0-2.2-1.1-2.2-2.4s1-2.4 2.2-2.4 2.2 1.1 2.2 2.4-1 2.4-2.2 2.4zm7 0c-1.2 0-2.2-1.1-2.2-2.4s1-2.4 2.2-2.4 2.2 1.1 2.2 2.4-1 2.4-2.2 2.4z"/></svg>Войти в Discord</a>
 </div></div>
 </main>
 
 <footer><div class="wrap">
-  <span>ASTRUM — мир, который мы создаём вместе.</span>
-  <ul><li><a href="map/">Карта</a></li><li><a href="wiki/">Вики</a></li><li><a href="https://shop.astrums.pro">Магазин</a></li><li><a href="https://discord.gg/7jnWGDB2fP" rel="noopener">Discord</a></li></ul>
+  <a href="./" class="brand"><img class="logo" src="assets/logo.webp" width="26" height="26" alt="" style="width:26px;height:26px">ASTRUM</a>
+  <span>Мир, который мы создаём вместе · Не является продуктом Mojang</span>
+  <ul><li><a href="map/">Карта</a></li><li><a href="wiki/">Вики</a></li><li><a href="https://shop.astrums.pro">Магазин</a></li></ul>
 </div></footer>
 
 <div class="toast" id="toast" role="status">IP скопирован</div>
-<script src="assets/bg.js" defer></script>
+<script src="assets/fx.js" defer></script>
 <script src="assets/shared.js" defer></script>
 </body>
 </html>

@@ -11,35 +11,28 @@ document.querySelectorAll('[data-ip]').forEach(b => b.addEventListener('click', 
 }));
 
 /* мобильное меню */
-const burger = document.querySelector('.burger');
-burger.addEventListener('click', () => document.body.classList.toggle('menu-open'));
-document.querySelectorAll('nav a').forEach(a => a.addEventListener('click', () => document.body.classList.remove('menu-open')));
+document.querySelector('.burger').addEventListener('click', () => document.body.classList.toggle('menu-open'));
+document.querySelectorAll('.top a').forEach(a => a.addEventListener('click', () => document.body.classList.remove('menu-open')));
 
-/* шапка получает фон при прокрутке */
+/* шапка: прозрачная над картинкой, плотная при прокрутке */
 const nav = document.getElementById('nav');
-addEventListener('scroll', () => nav.classList.toggle('solid', scrollY > 30), { passive: true });
+const onScroll = () => nav.classList.toggle('solid', scrollY > 40);
+addEventListener('scroll', onScroll, { passive: true }); onScroll();
 
-/* картинка героя подгружается под текущую тему */
-const loadSky = () => document.querySelectorAll('.pic img[data-src]').forEach(i => {
-  if (i.classList.contains(root.dataset.sky)) { i.src = i.dataset.src; delete i.dataset.src; }
-});
-loadSky();
-
-/* переключатель день/ночь */
+/* переключатель день / ночь */
 document.getElementById('sw').addEventListener('click', () => {
   const s = root.dataset.sky === 'night' ? 'day' : 'night';
   root.dataset.sky = s;
-  loadSky();
   try { localStorage.setItem('astrum-sky', s); } catch (e) {}
 });
 
 /* мягкое появление блоков при прокрутке */
 if ('IntersectionObserver' in window) {
   const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .12 });
-  document.querySelectorAll('.p,.rows a,.step,details,.disc,.label').forEach(el => { el.classList.add('rv'); io.observe(el); });
+  document.querySelectorAll('.p,.card,.step,.qs,.band,.head').forEach(el => { el.classList.add('rv'); io.observe(el); });
 }
 
-/* статус сервера и число игроков — после отрисовки страницы, в свободное время браузера */
+/* статус сервера и число игроков — после отрисовки страницы */
 const plural = n => n % 10 === 1 && n % 100 !== 11 ? 'игрок' : [2, 3, 4].includes(n % 10) && ![12, 13, 14].includes(n % 100) ? 'игрока' : 'игроков';
 const loadStatus = () => fetch('https://api.mcsrvstat.us/3/' + IP)
   .then(r => r.json())
@@ -51,4 +44,4 @@ const loadStatus = () => fetch('https://api.mcsrvstat.us/3/' + IP)
     document.getElementById('count').textContent = on ? '· ' + n + ' ' + plural(n) : '';
   })
   .catch(() => {});
-setTimeout(() => (window.requestIdleCallback || (f => f()))(loadStatus), 800);
+setTimeout(() => (window.requestIdleCallback || (f => f()))(loadStatus), 600);
