@@ -3,7 +3,7 @@
 
 backend:
   name: github
-  repo: Tr1ton4ikus/astrum-site
+  repo: Tr1ton4ikus/site-astrum
   branch: main
   # base_url: https://ВАШ-OAUTH-ПРОКСИ   # нужен, если сайт не на Netlify (см. wiki/README.md)
 
@@ -11,8 +11,8 @@ backend:
 local_backend: true
 
 locale: ru
-site_url: https://tr1ton4ikus.github.io/astrum-site
-display_url: https://tr1ton4ikus.github.io/astrum-site/wiki/
+site_url: https://tr1ton4ikus.github.io/site-astrum
+display_url: https://tr1ton4ikus.github.io/site-astrum/wiki/
 media_folder: wiki/uploads
 public_folder: /wiki/uploads
 
