@@ -2,10 +2,10 @@
 # Что поменять перед запуском: backend.repo — ваш репозиторий сайта на GitHub (ВЛАДЕЛЕЦ/РЕПОЗИТОРИЙ).
 
 backend:
-  name: github
-  repo: Tr1ton4ikus/site-astrum
-  branch: main
-  # base_url: https://ВАШ-WORKER.workers.dev   # адрес Cloudflare Worker из wiki/admin/oauth-worker.js — без него вход через GitHub на GitHub Pages не работает
+    name: github
+    repo: Tr1ton4ikus/site-astrum
+    branch: main
+    # base_url: https://ВАШ-WORKER.workers.dev   # адрес Cloudflare Worker из wiki/admin/oauth-worker.js — без него вход через GitHub на GitHub Pages не работает
 
 # для локальной работы: npx decap-server  (редактор пишет прямо в файлы на диске, без GitHub)
 local_backend: true
@@ -17,29 +17,48 @@ media_folder: wiki/uploads
 public_folder: /wiki/uploads
 
 collections:
-  - name: articles
-    label: Статьи вики
-    label_singular: статью
-    folder: wiki/content
-    extension: md
-    format: frontmatter
-    create: true
-    slug: "{{fields.id}}"
-    summary: "{{group}} · {{title}}"
-    sortable_fields: [order, title, group]
-    fields:
-      - { name: id,    label: Адрес страницы, widget: string, hint: "Латиницей, без пробелов: например how-play. Станет ссылкой /wiki/#/how-play. Для существующих статей не менять." }
-      - { name: title, label: Заголовок,      widget: string }
-      - name: group
-        label: Раздел в меню
-        widget: select
-        options: ["Начало", "Нововведения", "Другое"]   # добавьте свои разделы сюда
-        default: "Нововведения"
-      - { name: order, label: Порядок в меню, widget: number, value_type: int, min: 1, default: 50, hint: "Меньше — выше в списке" }
-      - { name: cover, label: Обложка,        widget: image, required: false, hint: "Необязательно. Широкая картинка сверху статьи" }
-      - name: body
-        label: Текст
-        widget: markdown
-        hint: "Заголовки H2 и H3 попадают в оглавление справа. Кнопка: пишите `[Текст](ссылка){.btn}` или `{.btn .ghost}` для светлой. Врезка: строка с `>` в начале."
-        buttons: [bold, italic, code, link, heading-two, heading-three, quote, bulleted-list, numbered-list]
-        editor_components: [image, code-block]
+    - name: articles
+      label: Статьи вики
+      label_singular: статью
+      folder: wiki/content
+      extension: md
+      format: frontmatter
+      create: true
+      slug: "{{fields.id}}"
+      summary: "{{group}} · {{title}}"
+      sortable_fields: [order, title, group]
+      fields:
+          - {
+                name: id,
+                label: Адрес страницы,
+                widget: string,
+                hint: "Латиницей, без пробелов: например how-play. Станет ссылкой /wiki/#/how-play. Для существующих статей не менять.",
+            }
+          - { name: title, label: Заголовок, widget: string }
+          - name: group
+            label: Раздел в меню
+            widget: select
+            options: ["Начало", "Нововведения", "Другое"] # добавьте свои разделы сюда
+            default: "Нововведения"
+          - {
+                name: order,
+                label: Порядок в меню,
+                widget: number,
+                value_type: int,
+                min: 1,
+                default: 50,
+                hint: "Меньше — выше в списке",
+            }
+          - {
+                name: cover,
+                label: Обложка,
+                widget: image,
+                required: false,
+                hint: "Необязательно. Широкая картинка сверху статьи",
+            }
+          - name: body
+            label: Текст
+            widget: markdown
+            hint: "Заголовки H2 и H3 попадают в оглавление справа. Кнопка: пишите `[Текст](ссылка){.btn}` или `{.btn .ghost}` для светлой. Врезка: строка с `>` в начале."
+            buttons: [bold, italic, code, link, heading-two, heading-three, quote, bulleted-list, numbered-list]
+            editor_components: [image, code-block]
